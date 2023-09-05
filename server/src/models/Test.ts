@@ -4,10 +4,11 @@ interface ITest extends Document {
     title: string;
     description: string;
     createdBy: mongoose.Types.ObjectId;
-    questions: { question: string, answers: {answer: string, isCorrect: boolean}[] }[];
+    questions: { question: string, file: Blob, answers: {answer: string, isCorrect: boolean}[] }[];
 }
 const questionSchema = new Schema({
     question: { type: String, required: true },
+    file: { type: Object },
     answers: [
         {
             answer: { type: String, required: true },
