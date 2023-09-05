@@ -48,9 +48,9 @@ router.post("/login", upload.none(), async (req: Request, res: Response) => {
           expiresIn: "24h",
         },
       );
-      return res
-        .status(200)
-        .json({ token, message: "Authentication successful" });
+      res.cookie("token", token, { httpOnly: true });
+
+      return res.status(200).json({ message: "Authentication successful" });
     } else {
       return res.status(401).json({ error: "Authentication failed" });
     }
