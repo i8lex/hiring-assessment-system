@@ -1,23 +1,19 @@
-import React from 'react';
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import LoginPage from "./pages/Login";
+import { GeneralLayout } from "./components/layouts/Layout";
+import TestsPage from "./pages/TestsPage";
 
 function App() {
   return (
-    <div >
-      <header >
-
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <GeneralLayout>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/tests" element={<TestsPage />} />
+        </Routes>
+      </GeneralLayout>
+    </>
   );
 }
 
