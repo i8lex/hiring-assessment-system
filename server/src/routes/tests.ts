@@ -11,7 +11,7 @@ dotenv.config();
 router.use(authMiddleware);
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
-router.post("/create", upload.none(), async (req: Request, res: Response) => {
+router.post("/", upload.none(), async (req: Request, res: Response) => {
   try {
     const token = req.headers.authorization?.split(" ")[1];
     // @ts-ignore
@@ -40,9 +40,10 @@ router.post("/create", upload.none(), async (req: Request, res: Response) => {
   }
 });
 
-router.get("/tests", async (req: Request, res: Response) => {
+router.get("/", async (req: Request, res: Response) => {
   try {
     const token = req.headers.authorization?.split(" ")[1];
+    // const token = req.cookies.token;
     // @ts-ignore
     const { userId } = jwt.verify(token!, process.env.SECRET_WORD);
     const tests = await Test.find({ createdBy: userId });
@@ -52,7 +53,7 @@ router.get("/tests", async (req: Request, res: Response) => {
   }
 });
 
-router.get("/test/:id", async (req: Request, res: Response) => {
+router.get("/:id", async (req: Request, res: Response) => {
   try {
     const test = await Test.findById(req.params.id);
     res.status(200).json(test);
@@ -61,19 +62,15 @@ router.get("/test/:id", async (req: Request, res: Response) => {
   }
 });
 
-router.patch(
-  "/test/:id",
-  upload.none(),
-  async (req: Request, res: Response) => {
-    try {
-      const test = await Test.findByIdAndUpdate(req.params.id, req.body);
-      res.status(200).json(test);
-    } catch (error) {
-      res.status(500).json({ error });
-    }
-  },
-);
-router.delete("/delete/:id", async (req: Request, res: Response) => {
+router.patch("/:id", upload.none(), async (req: Request, res: Response) => {
+  try {
+    const test = await Test.findByIdAndUpdate(req.params.id, req.body);
+    res.status(200).json(test);
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+});
+router.delete("/:id", async (req: Request, res: Response) => {
   try {
     const test = await Test.findByIdAndDelete(req.params.id);
     res.status(200).json(test);
