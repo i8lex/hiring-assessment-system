@@ -55,7 +55,7 @@ export const SendTestModal: FC<SendTestModalProps> = ({
             leaveTo="opacity-0 scale-95"
           >
             <div className="fixed inset-0 flex max-h-screen  items-start justify-center overflow-y-auto pt-[44px] tablet:items-center tablet:p-4">
-              <Dialog.Panel className="h-full tablet:h-[400px] w-screen overflow-hidden overflow-y-auto bg-white text-parL font-medium text-darkSkyBlue-100 tablet:m-auto tablet:h-auto tablet:w-[642px] tablet:rounded-3xl">
+              <Dialog.Panel className="h-full tablet:h-[600px] w-screen overflow-hidden overflow-y-auto bg-white text-parL font-medium text-darkSkyBlue-100 tablet:m-auto tablet:w-[642px] tablet:rounded-3xl">
                 <div className="flex items-center justify-between border-y border-y-stroke bg-[#F9FAFB] px-4 py-3.5 tablet:border-t-0 tablet:px-6 tablet:py-4">
                   <Dialog.Title>
                     <div className="flex items-center gap-1">

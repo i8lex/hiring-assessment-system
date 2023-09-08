@@ -1,6 +1,7 @@
-import { Fragment, useState } from "react";
+import React, { Fragment, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { Dialog, Menu, Transition } from "@headlessui/react";
+import { ReactComponent as X } from "../../../assets/IconsSet/x-close.svg";
 import { CreateTestMarkup } from "./CreateTestMarkup";
 import {
   useAddTestMutation,
@@ -90,17 +91,13 @@ export const CreateTestModal: FC<CreateTestModalProps> = ({
                     </div>
                   </Dialog.Title>
                   <button
-                    className="-mr-2.5 h-8 w-8 rounded-full text-darkSkyBlue-80 outline-none hover:text-darkSkyBlue-100 focus:ring-2 focus:ring-green-80"
+                    className="-mr-2.5 h-8 w-8 rounded-full text-darkSkyBlue-80 outline-none hover:text-darkSkyBlue-100 "
                     onClick={() => {
                       toggleModal(false);
                       reset();
                     }}
                   >
-                    <img
-                      src="../../../assets/IconsSet/x-close.svg"
-                      alt="X"
-                      className="mx-auto h-5 w-5"
-                    />
+                    <X className="h-6 w-6 text-dark-40" />
                   </button>
                 </div>
 

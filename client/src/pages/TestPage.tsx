@@ -22,7 +22,6 @@ const TestPage = () => {
   const [isTestStarted, setIsTestStarted] = useState(false);
   const [isTestEnded, setIsTestEnded] = useState(false);
   const role = useSelector((state: RootState) => state.auth.role);
-
   const [minutes, setMinutes] = useState(test?.timer);
   const [seconds, setSeconds] = useState(0);
   const [remainingSeconds, setRemainingSeconds] = useState(0);
@@ -120,13 +119,12 @@ const TestPage = () => {
             <button
               disabled={isTestEnded || isCompleted}
               className={clsx(
-                " border border-stroke rounded-md  text-white py-2 w-[150px]",
+                " border border-stroke rounded-md font-medium text-white py-2 w-[150px]",
                 isTestEnded || isCompleted
                   ? "pointer-none bg-gray-100"
                   : "pointer-events-auto bg-orange-60 hover:bg-orange-80",
               )}
               onClick={async () => {
-                // setIsTestStarted(!isTestStarted);
                 handleStartTest(!isTestStarted);
                 if (isTestStarted) {
                   setIsTestEnded(true);
@@ -137,14 +135,16 @@ const TestPage = () => {
               {isTestStarted ? "Stop and send" : "Start test"}
             </button>
           ) : (
-            <button
-              className="bg-orange-60 border border-stroke rounded-md hover:bg-orange-80 text-white py-2 w-w-[150px]"
-              onClick={() => {
-                setIsModalOpen(true);
-              }}
-            >
-              {"Send test"}
-            </button>
+            <div className="flex flex-col gap-2 items-center">
+              <button
+                className="text-dark-100 font-semibold h-12 bg-orange-40 rounded border border-dark-90 shadow-sm shadow-dark-60 py-2 w-[130px]"
+                onClick={() => {
+                  setIsModalOpen(true);
+                }}
+              >
+                {" Scores or Sent"}
+              </button>
+            </div>
           )}
           <div className="w-[150px]">
             <Timer

@@ -42,5 +42,6 @@ export type User = {
   email: string;
   password: string;
   role: string;
-  tests: Test[];
+  answers: Answer[];
+  tests: string[];
 };
