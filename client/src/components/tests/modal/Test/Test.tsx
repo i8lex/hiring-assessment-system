@@ -4,12 +4,9 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { Listbox, Transition } from "@headlessui/react";
 import clsx from "clsx";
-// @ts-ignore
 import { ReactComponent as ChevronUp } from "../../../../assets/IconsSet/dropdown-up.svg";
-// @ts-ignore
 import { ReactComponent as ChevronDown } from "../../../../assets/IconsSet/dropdown.svg";
 import { QuestionCard } from "./QuestionCard";
-
 import type { Test } from "../../../../types";
 import { ToggleSwitch } from "../ToggleSwitch";
 
@@ -23,7 +20,7 @@ export const TestCard = () => {
 
   return (
     <>
-      <div className=" mb-2 flex flex-col px-4 tablet:mb-3 tablet:flex-row tablet:px-6 desktop:mb-3 desktop:h-[54px]">
+      <div className=" mb-2 flex flex-col px-4 tablet:mb-3 tablet:flex-row tablet:px-6 desktop:mb-3 h-[30px]">
         <Controller
           name={`timerEnabled`}
           control={control}
@@ -69,9 +66,9 @@ export const TestCard = () => {
                             {`${getValues("timer")} min`}
                           </div>
                           {open ? (
-                            <ChevronDown className="my-auto ml-2 mr-3.5 h-5 w-5" />
+                            <ChevronDown className="my-auto ml-2 mr-3.5 h-5 w-5 text-dark-40" />
                           ) : (
-                            <ChevronUp className="my-auto ml-2 mr-3.5 h-5 w-5 text-stroke" />
+                            <ChevronUp className="my-auto ml-2 mr-3.5 h-5 w-5 text-dark-40" />
                           )}
                         </Listbox.Button>
                         <Transition
@@ -80,7 +77,7 @@ export const TestCard = () => {
                           leaveFrom="opacity-100"
                           leaveTo="opacity-0"
                         >
-                          <Listbox.Options className="absolute  z-40 mt-0.5 max-h-[152px] w-full overflow-y-auto rounded-md border border-[#E9EBEE] bg-white scrollbar scrollbar-thumb-mystic-60 scrollbar-thumb-rounded-lg scrollbar-w-[3px] tablet:w-[187px]">
+                          <Listbox.Options className="absolute  z-40 mt-0.5 max-h-[152px] w-full overflow-y-auto rounded-md border border-[#E9EBEE] bg-white scrollbar scrollbar-thumb-gray-60 scrollbar-thumb-rounded-lg scrollbar-w-[3px] tablet:w-[187px]">
                             {Array.from(
                               { length: 10 },
                               (_, index) => index + 1,
@@ -96,7 +93,7 @@ export const TestCard = () => {
                                   }
                                   value={item}
                                 >
-                                  <span className="text-quot font-normal text-darkSkyBlue-80">
+                                  <span className="text-quot font-normal text-dark-80">
                                     {`${item} min`}
                                   </span>
                                 </Listbox.Option>
@@ -114,9 +111,7 @@ export const TestCard = () => {
         ) : null}
       </div>
       <div className="px-4 tablet:px-6">
-        <p className="mb-4 text-parS text-darkSkyBlue-100 tablet:hidden">
-          Question
-        </p>
+        <p className="mb-4 text-parS text-dark-100 tablet:hidden">Question</p>
       </div>
 
       <DndProvider backend={HTML5Backend}>
@@ -133,10 +128,11 @@ export const TestCard = () => {
       <div className="flex w-full flex-col items-end px-4  pt-2 pb-4 tablet:px-6 tablet:pb-6">
         <button
           type="button"
-          className="w-full tablet:w-[389px] px-4 py-2 bg-green-80 border border-stroke rounded-xl hover:bg-green-100 text-white"
+          className="w-full text-parS tablet:w-[389px] px-4 py-2 bg-orange-80 border border-stroke rounded-md hover:bg-orange-100 text-white"
           onClick={() => {
             append({
               question: "",
+              file: "",
               answers: [
                 { answer: "", isCorrect: false },
                 { answer: "", isCorrect: true },

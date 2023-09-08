@@ -13,8 +13,10 @@ export type Test = {
   timerEnabled: boolean;
   timer: number;
   questions: {
+    _id?: string;
     question: string;
-    file?: Blob;
+    file?: string;
+
     answers: { answer: string; isCorrect: boolean }[];
   }[];
 };

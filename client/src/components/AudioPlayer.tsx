@@ -2,18 +2,11 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import clsx from "clsx";
 import Wavesurfer from "wavesurfer.js";
-
-// @ts-ignore
 import { ReactComponent as PauseIcon } from "../assets/IconsSet/pause-circle.svg";
-// @ts-ignore
 import { ReactComponent as PlayIcon } from "../assets/IconsSet/play.svg";
-// @ts-ignore
 import { ReactComponent as SkipBackIcon } from "../assets/IconsSet/skip-back.svg";
-// @ts-ignore
 import { ReactComponent as SkipForwardIcon } from "../assets/IconsSet/skip-forward.svg";
-// @ts-ignore
 import { ReactComponent as VolumeIcon } from "../assets/IconsSet/volume-max.svg";
-
 import type { FC } from "react";
 
 type AudioPlayerProps = {
@@ -40,13 +33,13 @@ export const AudioPlayer: FC<AudioPlayerProps> = ({
         container: isInModal
           ? `#waveformInModal_${index}`
           : `#waveform_${index}`,
-        waveColor: "#A6B1BB",
-        barGap: 4,
+        waveColor: "#88a88c",
+        barGap: 0,
         height: 30,
-        barWidth: 2,
+        barWidth: 0.1,
         barRadius: 2,
         cursorWidth: 0,
-        cursorColor: "#203B54",
+        cursorColor: "#018a21",
       });
       waveform.current?.load(audioPath);
     }
@@ -127,10 +120,10 @@ export const AudioPlayer: FC<AudioPlayerProps> = ({
     window.addEventListener("mouseup", handleMouseUp);
   };
   return (
-    <div className="flex w-full items-center justify-between gap-1 p-0 tablet:gap-[17.5px]">
+    <div className="flex w-full items-center justify-between gap-1 p-0 tablet:gap-[17.5px] ">
       <div
         className={
-          "flex w-full items-center justify-between gap-3 rounded-xl bg-darkSkyBlue-10 px-4 py-1 tablet:gap-[23px] tablet:px-6"
+          "flex w-full items-center justify-between gap-3 rounded-md bg-orange-10 px-4 py-1 tablet:gap-[23px] tablet:px-6 tablet:w-[530px]"
         }
       >
         <div className="flex items-center p-0 tablet:gap-4">
@@ -141,18 +134,18 @@ export const AudioPlayer: FC<AudioPlayerProps> = ({
                 waveform.current?.skip(-15);
               }}
             >
-              <SkipBackIcon className="h-6 w-6 fill-darkSkyBlue-100 text-darkSkyBlue-100" />
+              <SkipBackIcon className="h-6 w-6  text-dark-100" />
             </button>
           ) : null}
           <div className="flex items-center gap-3 p-0 tablet:gap-5">
             <button type="button" onClick={playAudio}>
               {isPlaying ? (
                 <div className="h-5 w-5 tablet:h-6 tablet:w-6">
-                  <PauseIcon className="h-5 w-5 fill-darkSkyBlue-100 text-darkSkyBlue-10 tablet:h-6 tablet:w-6" />
+                  <PauseIcon className="h-5 w-5  text-dark-100 tablet:h-6 tablet:w-6" />
                 </div>
               ) : (
                 <div className="h-5 w-5 tablet:h-6 tablet:w-6">
-                  <PlayIcon className="h-5 w-5 fill-darkSkyBlue-100 text-darkSkyBlue-100 tablet:h-6  tablet:w-6" />
+                  <PlayIcon className="h-5 w-5  text-dark-100 tablet:h-6  tablet:w-6" />
                 </div>
               )}
             </button>
@@ -165,7 +158,9 @@ export const AudioPlayer: FC<AudioPlayerProps> = ({
                 ${open ? "" : "text-opacity-90"}
                 flex h-6 w-6 items-center justify-center p-0`}
                     >
-                      <VolumeIcon className="h-6 w-6 fill-darkSkyBlue-100 text-darkSkyBlue-100" />
+                      <VolumeIcon
+                      // className="h-6 w-6  text-dark-100"
+                      />
                     </Popover.Button>
                     <Transition
                       as={Fragment}
@@ -180,12 +175,12 @@ export const AudioPlayer: FC<AudioPlayerProps> = ({
                         <div className="absolute -top-1 left-5 z-50 ml-4 h-2 w-2 rotate-45 rounded-sm border-l border-t border-l-stroke border-t-stroke bg-white" />
                         <div className="absolute top-0 right-5 z-50 ml-4 h-0.5 w-4 bg-white" />
                         <div
-                          className="h-[3px] w-[62px] cursor-pointer justify-self-end rounded-full bg-darkSkyBlue-60 "
+                          className="h-[3px] w-[62px] cursor-pointer justify-self-end rounded-full bg-dark-40 "
                           onClick={(event) => handleLabelClick(event)}
                           onMouseDown={(event) => handleLabelMouseDown(event)}
                         >
                           <div
-                            className={`relative h-full rounded-l-full bg-darkSkyBlue-100 `}
+                            className={`relative h-full rounded-l-full bg-dark-80 `}
                             style={{ width: `${volume * 100}%` }}
                           >
                             <div className="absolute top-1/2 right-0 h-3 w-3 -translate-y-1/2 translate-x-1/2 rounded-full bg-white text-[6.667px] shadow-md " />
@@ -206,7 +201,7 @@ export const AudioPlayer: FC<AudioPlayerProps> = ({
                 waveform.current?.skip(15);
               }}
             >
-              <SkipForwardIcon className="h-6 w-6 fill-darkSkyBlue-100 text-darkSkyBlue-100" />
+              <SkipForwardIcon className="h-6 w-6 text-dark-100" />
             </button>
           ) : null}
         </div>
@@ -216,7 +211,7 @@ export const AudioPlayer: FC<AudioPlayerProps> = ({
             "flex items-center gap-[10px] justify-self-center p-0",
           )}
         >
-          <p className=" text-quot text-darkSkyBlue-100 tablet:text-parS">
+          <p className=" text-quot text-dark-100 tablet:text-parS">
             {formatTime(currentTime)}
           </p>
           {isInModal ? (
@@ -229,7 +224,7 @@ export const AudioPlayer: FC<AudioPlayerProps> = ({
             </div>
           )}
 
-          <p className="text-quot text-darkSkyBlue-100 tablet:text-parS">
+          <p className="text-quot text-dark-100 tablet:text-parS">
             {formatTime(duration)}
           </p>
         </div>

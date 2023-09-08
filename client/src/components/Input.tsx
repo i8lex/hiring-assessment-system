@@ -1,8 +1,6 @@
 import { forwardRef } from "react";
 import clsx from "clsx";
-
 import { InputValidationMessage } from "./tooltips/InputValidationMessage";
-
 import type { FC } from "react";
 
 export type InputProps = {
@@ -47,7 +45,7 @@ export const Input: FC<InputProps> = forwardRef<HTMLInputElement, InputProps>(
             htmlFor={id}
             className={clsx(
               labelClassName,
-              "text-parS font-medium text-darkSkyBlue-100",
+              "text-parS font-medium text-dark-100",
             )}
           >
             {label}
@@ -62,10 +60,10 @@ export const Input: FC<InputProps> = forwardRef<HTMLInputElement, InputProps>(
           name={name}
           className={clsx(
             inputClassName,
-            "h-[38px] w-full rounded-md text-parS placeholder:text-parS placeholder:font-normal focus:border-green-80 focus:ring-green-80 focus:ring-1 focus:outline-none  px-3 autofill:text-pars box-border",
+            "h-[38px] w-full rounded-md text-parS placeholder:text-parS placeholder:font-normal focus:border-orange-40 focus:ring-orange-40 focus:ring-1 focus:outline-none  px-3 autofill:text-pars box-border",
             errorText
               ? "border-error-80 text-error-100"
-              : "border-stroke text-darkSkyBlue-100",
+              : "border-stroke text-dark-100",
           )}
           onFocus={onFocus}
           {...restInputProps}

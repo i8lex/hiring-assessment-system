@@ -1,11 +1,11 @@
 import { Fragment, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { Dialog, Menu, Transition } from "@headlessui/react";
-
 import { CreateTestMarkup } from "./CreateTestMarkup";
-// import { ReactComponent as DropdownIcon } from "../../../assets/IconsSet/dropdown.svg";
-// import DropDownUpIcon from "../../../assets/IconsSet/dropdown-up.svg";
-// import X from "../../../assets/IconsSet/x-close.svg";
+import {
+  useAddTestMutation,
+  useDeleteTestMutation,
+} from "../../../redux/tests/testsApi";
 import type { Test } from "../../../types";
 import type { FC } from "react";
 
@@ -21,11 +21,10 @@ export const CreateTestModal: FC<CreateTestModalProps> = ({
   testId,
 }) => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
-
+  const [addTest] = useAddTestMutation();
   const toggleMenu = () => {
     setIsOpenMenu(!isOpenMenu);
   };
-  const [chooseFromMenu, setChooseFromMenu] = useState("Choose a template");
 
   const handleError = (errors: object) => {
     console.warn(errors);
@@ -37,9 +36,11 @@ export const CreateTestModal: FC<CreateTestModalProps> = ({
     getValues,
   } = useFormContext<Test>();
 
-  const handleCreate = async (data: Test) => {
+  const handleCreate = async (values: Test) => {
     try {
-      console.log(data);
+      await addTest(values);
+      await reset();
+      toggleModal(false);
     } catch (e) {
       console.warn(e);
     }
@@ -51,6 +52,7 @@ export const CreateTestModal: FC<CreateTestModalProps> = ({
         <Dialog
           open={isModalOpen}
           onClose={() => {
+            reset();
             toggleModal(false);
           }}
           className="relative z-50"
@@ -91,11 +93,7 @@ export const CreateTestModal: FC<CreateTestModalProps> = ({
                     className="-mr-2.5 h-8 w-8 rounded-full text-darkSkyBlue-80 outline-none hover:text-darkSkyBlue-100 focus:ring-2 focus:ring-green-80"
                     onClick={() => {
                       toggleModal(false);
-                      // setExerciseTypeId(0);
-                      // reset();
-                      // setFiles && setFiles([]);
-                      // toggleExerciseId(0);
-                      // cleanExercise();
+                      reset();
                     }}
                   >
                     <img
@@ -107,6 +105,7 @@ export const CreateTestModal: FC<CreateTestModalProps> = ({
                 </div>
 
                 <form
+                  encType="multipart/form-data"
                   onSubmit={handleSubmit(handleCreate, handleError)}
                   noValidate
                   method="post"
@@ -116,17 +115,16 @@ export const CreateTestModal: FC<CreateTestModalProps> = ({
 
                   <div className="fixed flex w-full justify-between gap-4 border-t border-stroke bg-white p-4 tablet:relative tablet:flex tablet:justify-end tablet:px-6 tablet:py-5">
                     <button
-                      className="w-full tablet:w-fit px-4 py-2 bg-white border border-stroke rounded-xl hover:bg-gray-10 hover:text-dark-100"
+                      className="text-parS w-full tablet:w-fit px-4 py-2 bg-white border border-stroke rounded-xl hover:bg-gray-10 hover:text-dark-100"
                       onClick={() => {
+                        reset();
                         toggleModal(false);
-
-                        setChooseFromMenu("Choose a template");
                       }}
                     >
                       Cancel
                     </button>
                     <button
-                      className="w-full tablet:w-fit px-4 py-2 bg-green-80 border border-stroke rounded-xl hover:bg-green-100 text-white"
+                      className="text-parS w-full tablet:w-fit px-4 py-2 bg-orange-80 border border-stroke rounded-xl hover:bg-orange-100 text-white"
                       // text={exerciseId ? 'Save' : 'Add'}
                       type="submit"
                     >

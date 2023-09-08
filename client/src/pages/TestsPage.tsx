@@ -11,8 +11,8 @@ type TestsResponse = {
   data: Test[];
 };
 const TestsPage = () => {
-  const { data: tests = [] as TestsResponse | never[], isLoading } =
-    useGetTestsQuery({});
+  const { data: tests = [] as Test[] | never[], isLoading } =
+    useGetTestsQuery();
   const navigate = useNavigate();
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated,
@@ -30,6 +30,7 @@ const TestsPage = () => {
       questions: [
         {
           question: "",
+          file: "",
           answers: [
             { answer: "", isCorrect: true },
             { answer: "", isCorrect: false },
@@ -48,6 +49,7 @@ const TestsPage = () => {
     <>
       <div className="flex flex-col gap-4 tablet:gap-6   ">
         <button
+          className="justify-items-end w-full text-parS tablet:w-[389px] px-4 py-2 bg-orange-60 border border-stroke rounded-md hover:bg-orange-80 text-white"
           onClick={() => {
             toggleModal(true);
           }}

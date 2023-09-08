@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import User from "../models/User";
+import User from "../models/userModel";
 import * as jwt from "jsonwebtoken";
 import multer from "multer";
 import * as dotenv from "dotenv";

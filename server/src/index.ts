@@ -10,7 +10,7 @@ import cors from "cors";
 import * as dotenv from "dotenv";
 import testRoutes from "./routes/tests";
 import authRoutes from "./routes/auth";
-
+import fileRoutes from "./routes/file";
 dotenv.config();
 
 const app = express();
@@ -31,8 +31,15 @@ db.once("open", () => {
   console.log("Connected to mongoDB");
 });
 
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  }),
+);
 app.use(express.json());
-app.use(cors());
 app.use(cookieParser());
 app.use(
   session({
@@ -44,7 +51,8 @@ app.use(
   }),
 );
 app.use("/api", authRoutes);
-app.use("/api/tests", testRoutes);
+app.use("/api", testRoutes);
+app.use("/api/file", fileRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

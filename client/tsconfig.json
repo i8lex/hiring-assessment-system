@@ -20,7 +20,7 @@
     "noEmit": true,
     "jsx": "preserve"
   },
-  "include":    ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.svg"],
+  "include":    ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.svg", "src/svg.d.ts"],
 
-  "files": ["./svg.d.ts", "./assets/**/*"],
+  "files": ["./svg.d.ts", "src/**/*.ts"],
 }

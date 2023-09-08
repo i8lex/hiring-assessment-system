@@ -4,11 +4,8 @@ import { Controller, useFormContext } from "react-hook-form";
 import { Menu, Transition } from "@headlessui/react";
 import clsx from "clsx";
 import { Input } from "../../../Input";
-// @ts-ignore
 import { ReactComponent as DotsIcon } from "../../../../assets/IconsSet/dots-vertical.svg";
-// @ts-ignore
 import { ReactComponent as MoveIcon } from "../../../../assets/IconsSet/move.svg";
-// @ts-ignore
 import { ReactComponent as X } from "../../../../assets/IconsSet/x-close.svg";
 import { handleDnDUtil } from "../../../../utils/handleDnDUtil";
 import type { Test } from "../../../../types";
@@ -125,7 +122,7 @@ export const AnswerCard: FC<TestCardProps> = ({
                         );
                       }
                     }}
-                    className="cursor-pointer rounded border-stroke text-green-100 shadow-sm focus:border-green-100 focus:ring focus:ring-green-100 focus:ring-opacity-50 focus:ring-offset-0"
+                    className="cursor-pointer rounded border-stroke text-orange-100 shadow-sm focus:border-green-100 focus:ring focus:ring-orange-100 focus:ring-opacity-50 focus:ring-offset-0"
                   />
                 );
               }}
@@ -168,9 +165,9 @@ export const AnswerCard: FC<TestCardProps> = ({
             onClick={() => {
               removeAnswer(index);
             }}
-            className="ml-3 hidden h-6 w-6 cursor-pointer p-0 text-darkSkyBlue-40 tablet:block"
+            className="ml-3 hidden h-6 w-6 cursor-pointer p-0 text-dark-40 tablet:block"
           >
-            <X className="h-6 w-6 text-darkSkyBlue-40" />
+            <X className="h-6 w-6 text-dark-40" />
           </div>
         ) : null}
         {getValues(`questions.${questionIndex}.answers`).length > 1 ? (
@@ -178,7 +175,7 @@ export const AnswerCard: FC<TestCardProps> = ({
             <div className="ml-2 block h-6 w-6 tablet:hidden">
               <MoveIcon
                 className={clsx(
-                  " h-6 w-6 cursor-move text-darkSkyBlue-40",
+                  " h-6 w-6 cursor-move text-dark-40",
                   isDragging ? "text-green-80" : "",
                 )}
               />
@@ -189,7 +186,7 @@ export const AnswerCard: FC<TestCardProps> = ({
                 <Menu.Button
                   onClick={toggleMenu}
                   className={
-                    "flex h-[38px] cursor-pointer items-center justify-between rounded-md  text-parS font-normal text-darkSkyBlue-80 hover:bg-mystic-20"
+                    "flex h-[38px] cursor-pointer items-center justify-between rounded-md  text-parS font-normal text-dark-80 hover:bg-gray-20"
                   }
                 >
                   <DotsIcon className="h-6 w-6 text-stroke" />
@@ -204,7 +201,7 @@ export const AnswerCard: FC<TestCardProps> = ({
                   leaveFrom="transform opacity-100 scale-100"
                   leaveTo="transform opacity-0 scale-95"
                 >
-                  <Menu.Items className="absolute top-9 right-0 z-30 w-[164px] origin-top-right rounded-md border border-darkSkyBlue-10 bg-white shadow-lg">
+                  <Menu.Items className="absolute top-9 right-0 z-30 w-[164px] origin-top-right rounded-md border border-dark-10 bg-white shadow-lg">
                     {getValues(`questions.${questionIndex}.answers`).length >
                     1 ? (
                       <div className="border-b border-b-[#E7EDEF]">
@@ -213,9 +210,9 @@ export const AnswerCard: FC<TestCardProps> = ({
                             onClick={() => {
                               setIsCanMove(!isCanMove);
                             }}
-                            className="flex cursor-pointer items-center gap-3 py-2 px-4 text-parS font-normal text-darkSkyBlue-80 hover:bg-mystic-20 "
+                            className="flex cursor-pointer items-center gap-3 py-2 px-4 text-parS font-normal text-dark-80 hover:bg-gray-20 "
                           >
-                            <MoveIcon className="h-[14px] w-[14px] text-darkSkyBlue-80 " />
+                            <MoveIcon className="h-[14px] w-[14px] text-dark-80 " />
                             <p className="text-quot font-medium">Move</p>
                           </div>
                         </Menu.Item>
@@ -227,9 +224,9 @@ export const AnswerCard: FC<TestCardProps> = ({
                           onClick={() => {
                             removeAnswer(index);
                           }}
-                          className="flex cursor-pointer items-center gap-3 py-2 px-4 text-parS font-normal text-darkSkyBlue-80 hover:bg-mystic-20 "
+                          className="flex cursor-pointer items-center gap-3 py-2 px-4 text-parS font-normal text-dark-80 hover:bg-gray-20 "
                         >
-                          <X className="h-[14px] w-[14px] text-darkSkyBlue-80" />
+                          <X className="h-[14px] w-[14px] text-dark-80" />
                           <p className="text-quot font-medium">Delete</p>
                         </div>
                       </Menu.Item>

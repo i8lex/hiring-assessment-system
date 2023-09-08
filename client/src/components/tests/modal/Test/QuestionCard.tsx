@@ -5,24 +5,24 @@ import { Menu, Transition } from "@headlessui/react";
 import clsx from "clsx";
 import { Input } from "../../../Input";
 import { AnswerCard } from "./AnswerCard";
-// @ts-ignore
-import { ReactComponent as PlusIcon } from "../../../../assets/IconsSet/plus-circle.svg";
-// @ts-ignore
 import { ReactComponent as DotsIcon } from "../../../../assets/IconsSet/dots-vertical.svg";
-// @ts-ignore
 import { ReactComponent as MoveIcon } from "../../../../assets/IconsSet/move.svg";
-// @ts-ignore
 import { ReactComponent as X } from "../../../../assets/IconsSet/x-close.svg";
 import { handleDnDUtil } from "../../../../utils/handleDnDUtil";
 import type { Test } from "../../../../types";
 import type { FC } from "react";
-import { watch } from "fs/promises";
 import { AudioPlayer } from "../../../AudioPlayer";
+import {
+  useAddFileMutation,
+  useDeleteFileMutation,
+  useGetFileQuery,
+} from "../../../../redux/files/filesApi";
 
 type QuestionCardProps = {
   index: number;
   removeQuestion: (value: number) => void;
 };
+
 export const QuestionCard: FC<QuestionCardProps> = ({
   index,
   removeQuestion,
@@ -34,13 +34,16 @@ export const QuestionCard: FC<QuestionCardProps> = ({
     control,
     formState: { errors },
   } = useFormContext<Test>();
+  const [deleteFile] = useDeleteFileMutation();
+  const [addFile] = useAddFileMutation();
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: `questions.${index}.answers`,
   });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCanMove, setIsCanMove] = useState(false);
-  const [filePath, setFilePath] = useState("");
+  const [filePath, setFilePath] = useState({ id: "", path: "", mimeType: "" });
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -75,19 +78,41 @@ export const QuestionCard: FC<QuestionCardProps> = ({
     }),
     [handleDnDUtil, index],
   );
-  function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
+  const onSelectFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const reader = new FileReader();
       const file = e.target.files[0];
-      setValue(`questions.${index}.file`, file);
-      reader.addEventListener("load", () => {
-        setFilePath(reader.result?.toString() || "");
-      });
-      reader.readAsDataURL(file);
+      const formData = new FormData();
+      formData.append("file", file);
+      const responseData = await addFile(formData);
+
+      if ("error" in responseData) {
+        console.error(responseData.error);
+      } else {
+        const data = responseData.data;
+        console.log(data.file);
+
+        setValue(`questions.${index}.file`, data.file._id);
+        reader.addEventListener("load", () => {
+          setFilePath({
+            id: data.file._id,
+            path: reader.result?.toString() || "",
+            mimeType: file.type,
+          });
+        });
+        reader.readAsDataURL(file);
+      }
+
       console.log(filePath);
     }
-  }
-  console.log(getValues("questions"));
+  };
+  const handleDeleteFile = (fileId: string) => {
+    deleteFile(fileId);
+    setFilePath({ id: "", path: "", mimeType: "" });
+    setValue(`questions.${index}.file`, undefined);
+  };
+  console.log(getValues(`questions.${index}.file`));
+
   return (
     <>
       <div
@@ -109,10 +134,10 @@ export const QuestionCard: FC<QuestionCardProps> = ({
                 <div className="hidden h-5 w-5 tablet:block">
                   <MoveIcon
                     className={clsx(
-                      "h-5 w-5 cursor-move text-darkSkyBlue-40",
+                      "h-5 w-5 cursor-move text-dark-40",
                       isDragging ? "text-green-80" : "",
                       isOver && canDrop
-                        ? "rounded-md bg-mystic-40"
+                        ? "rounded-md bg-gray-40"
                         : "bg-transparent",
                     )}
                   />
@@ -120,7 +145,7 @@ export const QuestionCard: FC<QuestionCardProps> = ({
               ) : null}
 
               <div className="hidden items-center gap-2 tablet:flex">
-                <p className="text-parS text-darkSkyBlue-100">Question</p>
+                <p className="text-parS text-dark-100">Question</p>
               </div>
             </div>
 
@@ -155,9 +180,9 @@ export const QuestionCard: FC<QuestionCardProps> = ({
               onClick={() => {
                 removeQuestion(index);
               }}
-              className="ml-3 hidden h-6 w-6 cursor-pointer p-0 text-darkSkyBlue-40 tablet:block"
+              className="ml-3 hidden h-6 w-6 cursor-pointer p-0 text-dark-40 tablet:block"
             >
-              <X className="h-6 w-6 text-darkSkyBlue-40" />
+              <X className="h-6 w-6 text-dark-40" />
             </div>
           ) : null}
           {getValues(`questions`).length > 1 ? (
@@ -167,7 +192,7 @@ export const QuestionCard: FC<QuestionCardProps> = ({
                   <Menu.Button
                     onClick={toggleMenu}
                     className={
-                      "flex h-[38px] cursor-pointer items-center justify-between rounded-md  text-parS font-normal text-darkSkyBlue-80 hover:bg-mystic-20"
+                      "flex h-[38px] cursor-pointer items-center justify-between rounded-md  text-parS font-normal text-dark-80 hover:bg-gray-20"
                     }
                   >
                     <DotsIcon className="h-6 w-6 text-stroke" />
@@ -182,7 +207,7 @@ export const QuestionCard: FC<QuestionCardProps> = ({
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items className="absolute top-9 right-0 z-30 w-[164px] origin-top-right rounded-md border border-darkSkyBlue-10 bg-white shadow-lg">
+                    <Menu.Items className="absolute top-9 right-0 z-30 w-[164px] origin-top-right rounded-md border border-dark-10 bg-white shadow-lg">
                       {getValues(`questions`).length > 1 ? (
                         <div className="border-b border-b-[#E7EDEF]">
                           <Menu.Item>
@@ -190,7 +215,7 @@ export const QuestionCard: FC<QuestionCardProps> = ({
                               onClick={() => {
                                 setIsCanMove(!isCanMove);
                               }}
-                              className="flex cursor-pointer items-center gap-3 py-2 px-4 text-parS font-normal text-darkSkyBlue-80 hover:bg-mystic-20 "
+                              className="flex cursor-pointer items-center gap-3 py-2 px-4 text-parS font-normal text-dark-80 hover:bg-gray-20 "
                             >
                               <MoveIcon className="h-[14px] w-[14px] text-stroke " />
                               <p className="text-quot font-medium">Move</p>
@@ -204,9 +229,9 @@ export const QuestionCard: FC<QuestionCardProps> = ({
                             onClick={() => {
                               removeQuestion(index);
                             }}
-                            className="flex cursor-pointer items-center gap-3 py-2 px-4 text-parS font-normal text-darkSkyBlue-80 hover:bg-mystic-20 "
+                            className="flex cursor-pointer items-center gap-3 py-2 px-4 text-parS font-normal text-dark-80 hover:bg-gray-20 "
                           >
-                            <X className="h-[14px] w-[14px] text-darkSkyBlue-80" />
+                            <X className="h-[14px] w-[14px] text-dark-80" />
                             <p className="text-quot font-medium">Delete</p>
                           </div>
                         </Menu.Item>
@@ -219,7 +244,7 @@ export const QuestionCard: FC<QuestionCardProps> = ({
               <div className="ml-2 block h-6 w-6 tablet:hidden">
                 <MoveIcon
                   className={clsx(
-                    " h-6 w-6 cursor-move text-darkSkyBlue-40",
+                    " h-6 w-6 cursor-move text-dark-40",
                     isDragging ? "text-green-80" : "",
                   )}
                 />
@@ -228,18 +253,17 @@ export const QuestionCard: FC<QuestionCardProps> = ({
           ) : null}
         </div>
         <div className="relative">
-          {filePath ? (
-            getValues(`questions.${index}.file`)?.type.startsWith("image/") ? (
+          {filePath.path ? (
+            filePath.mimeType.startsWith("image/") ? (
               <>
                 <img
                   alt="Question file"
-                  src={filePath}
+                  src={filePath.path}
                   className="w-full tablet:w-[389px] rounded-xl"
                 />
                 <button
                   onClick={() => {
-                    setFilePath("");
-                    setValue(`questions.${index}.file`, undefined);
+                    handleDeleteFile(filePath.id);
                   }}
                   className="absolute top-4 right-4 hover:border hover:border-white rounded-full p-1"
                 >
@@ -247,12 +271,22 @@ export const QuestionCard: FC<QuestionCardProps> = ({
                 </button>
               </>
             ) : (
-              <AudioPlayer index={index} audioPath={filePath} />
+              <div className=" flex items-center gap-2 mb-2">
+                <AudioPlayer index={index} audioPath={filePath.path} />
+                <button
+                  onClick={() => {
+                    handleDeleteFile(filePath.id);
+                  }}
+                  className=" p-1"
+                >
+                  <X className="h-5 w-5 text-white fill-white" />
+                </button>
+              </div>
             )
           ) : (
             <>
               <label
-                className="relative mb-[5px] flex h-[38px] w-[389px] transform cursor-pointer flex-col items-center justify-center gap-[8px] rounded-md border  border-stroke py-[8px] px-[17px] text-parS font-medium  text-green-100   outline-none  ring-green-90 ring-offset-2 focus-visible:ring-2 active:translate-y-[1px] disabled:pointer-events-none disabled:bg-darkSkyBlue-10 disabled:text-darkSkyBlue-60 disabled:active:translate-y-0 tablet:mb-2  [&>svg]:h-5 [&>svg]:w-5 [&>svg]:flex-shrink-0"
+                className="relative mb-[5px] flex h-[38px] w-[389px] transform cursor-pointer flex-col items-center justify-center gap-[8px] rounded-md border  border-stroke py-[8px] px-[17px] text-parS font-medium  text-orange-100   outline-none  ring-green-90 ring-offset-2 focus-visible:ring-2 active:translate-y-[1px] disabled:pointer-events-none disabled:bg-dark-10 disabled:text-dark-60 disabled:active:translate-y-0 tablet:mb-2  [&>svg]:h-5 [&>svg]:w-5 [&>svg]:flex-shrink-0"
                 htmlFor="fileInput"
               >
                 <p>Upload file</p>
@@ -264,14 +298,13 @@ export const QuestionCard: FC<QuestionCardProps> = ({
                 className="fileInput"
                 hidden
                 multiple={false}
-                {...register(`questions.${index}.file`)}
                 onChange={onSelectFile}
               />
             </>
           )}
         </div>
 
-        <p className=" self-start text-parS text-darkSkyBlue-100 tablet:mb-3">
+        <p className=" self-start text-parS text-dark-100 tablet:mb-3">
           Answers
         </p>
         <div className="flex w-full items-center justify-start">
@@ -290,12 +323,12 @@ export const QuestionCard: FC<QuestionCardProps> = ({
         </div>
         <button
           type="button"
-          className=" hover:bg-green-20 mt-2 mb-4 py-2 rounded-xl  w-full bg-green-10 text-green-100 tablet:mt-3 tablet:mb-6 tablet:w-[389px] tablet:px-2"
+          className="text-parS hover:bg-orange-20 mt-2 mb-4 py-2 rounded-md  w-full bg-orange-10 text-orange-100 tablet:mt-3 tablet:mb-6 tablet:w-[389px] tablet:px-2"
           onClick={() => {
             append({ answer: "", isCorrect: false });
           }}
         >
-          Add an option
+          Add an answer
         </button>
         <div className="w-full border-t border-stroke" />
       </div>

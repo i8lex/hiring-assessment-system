@@ -7,14 +7,14 @@ const testsSlice = createSlice({
     toggleTest: (state, action) => {
       const { itemId, isChecked } = action.payload;
 
-      if (isChecked) {
-        state.push(itemId);
-      } else {
-        const index = state.indexOf(itemId);
-        if (index !== -1) {
-          state.splice(index, 1);
-        }
-      }
+      // if (isChecked) {
+      //   state.push(itemId);
+      // } else {
+      //   const index = state.indexOf(itemId);
+      //   if (index !== -1) {
+      //     state.splice(index, 1);
+      //   }
+      // }
     },
     clearTests: (state) => {
       return [];

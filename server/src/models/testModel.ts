@@ -5,8 +5,10 @@ interface ITest extends Document {
   description: string;
   createdBy: mongoose.Types.ObjectId;
   questions: {
+    timerEnabled: string;
+    timer: string;
     question: string;
-    file?: Blob;
+    file: string;
     answers: { answer: string; isCorrect: boolean }[];
   }[];
 }
