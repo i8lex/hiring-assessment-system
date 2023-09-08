@@ -5,6 +5,9 @@ interface IUser extends Document {
   username: string;
   email: string;
   password: string;
+  age: number;
+  firstname: string;
+  lastname: string;
   role: "user" | "admin";
   tests: mongoose.Types.ObjectId[];
   comparePassword(candidatePassword: string): Promise<boolean>;
@@ -34,6 +37,18 @@ const userSchema: Schema = new Schema({
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
       "Password must contain at least one lowercase letter, one uppercase letter and one number",
     ],
+  },
+  age: {
+    type: Number,
+    required: false,
+  },
+  firstname: {
+    type: String,
+    required: false,
+  },
+  lastname: {
+    type: String,
+    required: false,
   },
   role: { type: String, required: true, enum: ["user", "admin"] },
   tests: [{ type: mongoose.Types.ObjectId, ref: "Test" }],

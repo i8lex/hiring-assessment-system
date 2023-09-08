@@ -31,6 +31,7 @@ const RegisterPage = () => {
     formState: { errors },
     control,
     getValues,
+    reset,
   } = useForm<FormRequiredFields>();
   const navigate = useNavigate();
   const [register] = useRegisterMutation();
@@ -41,6 +42,7 @@ const RegisterPage = () => {
 
       if ("data" in response) {
         setTimeout(() => {
+          reset();
           navigate("/login");
           // handleClose();
         }, 2000);
@@ -100,6 +102,7 @@ const RegisterPage = () => {
             return (
               <Listbox
                 {...field}
+                defaultValue={"user"}
                 onChange={(value) => {
                   field.onChange(value);
                 }}

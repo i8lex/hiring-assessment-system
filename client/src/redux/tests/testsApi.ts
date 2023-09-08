@@ -62,6 +62,22 @@ export const testsApi = createApi({
       }),
       invalidatesTags: [{ type: "Tests", id: "LIST" }],
     }),
+    sendTest: build.mutation({
+      query: ({ id, body }) => ({
+        url: `tests/send/${id}`,
+        method: "PUT",
+        body,
+      }),
+      invalidatesTags: [{ type: "Tests", id: "LIST" }],
+    }),
+    sendAnswers: build.mutation({
+      query: ({ id, body }) => ({
+        url: `tests/answer/${id}`,
+        method: "PUT",
+        body,
+      }),
+      invalidatesTags: [{ type: "Tests", id: "LIST" }],
+    }),
     deleteTest: build.mutation({
       query: (id) => ({
         url: `tests/${id}`,

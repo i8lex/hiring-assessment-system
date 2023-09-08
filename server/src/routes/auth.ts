@@ -10,7 +10,8 @@ const upload = multer({ storage: storage });
 dotenv.config();
 router.post("/register", upload.none(), async (req: Request, res: Response) => {
   try {
-    const { username, password, role, email } = req.body;
+    const { username, password, role, email, firstname, lastname, age } =
+      req.body;
 
     const existingUser = await User.findOne({ username });
     const existingEmail = await User.findOne({ email });
@@ -21,7 +22,15 @@ router.post("/register", upload.none(), async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Username is already taken" });
     }
 
-    const user = new User({ username, password, role, email });
+    const user = new User({
+      username,
+      password,
+      role,
+      email,
+      firstname,
+      lastname,
+      age,
+    });
     await user.save();
     res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
