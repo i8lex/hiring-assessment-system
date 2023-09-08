@@ -19,7 +19,7 @@ export const GeneralLayout: FC<GeneralLayoutProps> = ({
         <div className="border-b border-stroke" />
       </div>
 
-      <div className={clsx(className, "m-6 ")}>{children}</div>
+      <div className={clsx(className, "m-6 desktop:px-32 ")}>{children}</div>
     </>
   );
 };

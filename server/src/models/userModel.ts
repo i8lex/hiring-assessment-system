@@ -10,6 +10,7 @@ interface IUser extends Document {
   lastname: string;
   role: "user" | "admin";
   tests: mongoose.Types.ObjectId[];
+  answers: [];
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
@@ -50,6 +51,7 @@ const userSchema: Schema = new Schema({
     type: String,
     required: false,
   },
+  answers: [],
   role: { type: String, required: true, enum: ["user", "admin"] },
   tests: [{ type: mongoose.Types.ObjectId, ref: "Test" }],
 });

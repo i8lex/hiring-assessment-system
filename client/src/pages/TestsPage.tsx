@@ -7,9 +7,6 @@ import { useState } from "react";
 import { CreateTestModal } from "../components/tests/modal/CreateTestModal";
 import { FormProvider, useForm } from "react-hook-form";
 
-type TestsResponse = {
-  data: Test[];
-};
 const TestsPage = () => {
   const { data: tests = [] as Test[] | never[], isLoading } =
     useGetTestsQuery();
@@ -17,6 +14,7 @@ const TestsPage = () => {
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated,
   );
+  const role = useSelector((state: RootState) => state.auth.role);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const toggleModal = (flag: boolean) => {
     setIsModalOpen(flag);
@@ -44,18 +42,19 @@ const TestsPage = () => {
     return null;
   }
 
-  console.log(tests);
   return (
     <>
       <div className="flex flex-col gap-4 tablet:gap-6   ">
-        <button
-          className="justify-items-end w-full text-parS tablet:w-[389px] px-4 py-2 bg-orange-60 border border-stroke rounded-md hover:bg-orange-80 text-white"
-          onClick={() => {
-            toggleModal(true);
-          }}
-        >
-          Add test
-        </button>
+        {role === "admin" ? (
+          <button
+            className="justify-items-end w-full text-parS tablet:w-[389px] px-4 py-2 bg-orange-60 border border-stroke rounded-md hover:bg-orange-80 text-white"
+            onClick={() => {
+              toggleModal(true);
+            }}
+          >
+            Add test
+          </button>
+        ) : null}
         {tests.map((test: Test) => (
           <TestCard
             key={test._id}

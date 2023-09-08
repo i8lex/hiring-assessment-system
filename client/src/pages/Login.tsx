@@ -6,6 +6,7 @@ import { loginSuccess } from "../redux/auth/authSlice";
 import { useLoginMutation } from "../redux/auth/authApi";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { SerializedError } from "@reduxjs/toolkit";
+import { Answer } from "../types";
 
 type FormRequiredFields = {
   username: string;
@@ -13,7 +14,9 @@ type FormRequiredFields = {
 };
 
 type LoginResponse =
-  | { data: { token: string; message: string } }
+  | {
+      data: { token: string; message: string; role: string; answers: Answer[] };
+    }
   | { error: FetchBaseQueryError | SerializedError };
 const LoginPage = () => {
   const {
@@ -30,7 +33,7 @@ const LoginPage = () => {
       const response: LoginResponse = await login(values);
 
       if ("data" in response) {
-        dispatch(loginSuccess(response.data.token));
+        dispatch(loginSuccess(response.data));
         setTimeout(() => {
           navigate("/tests");
           // handleClose();
@@ -107,6 +110,7 @@ const LoginPage = () => {
         <div className="flex flex-col  gap-1">
           <p className="text-dark-100 text-parM">Password</p>
           <Input
+            type="password"
             placeholder={"Enter your password"}
             isRequired={true}
             className="w-full tablet:w-[353px]"

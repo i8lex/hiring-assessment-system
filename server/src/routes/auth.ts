@@ -59,9 +59,13 @@ router.post("/login", upload.none(), async (req: Request, res: Response) => {
       );
       // res.cookie("token", token, { httpOnly: true });
 
-      return res
-        .status(200)
-        .json({ message: "Authentication successful", token });
+      return res.status(200).json({
+        message: "Authentication successful",
+        token,
+        role: user.role,
+        answers: user.answers,
+        userId: user._id,
+      });
     } else {
       return res.status(401).json({ error: "Authentication failed" });
     }

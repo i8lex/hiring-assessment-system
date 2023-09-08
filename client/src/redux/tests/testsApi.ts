@@ -71,8 +71,8 @@ export const testsApi = createApi({
       invalidatesTags: [{ type: "Tests", id: "LIST" }],
     }),
     sendAnswers: build.mutation({
-      query: ({ id, body }) => ({
-        url: `tests/answer/${id}`,
+      query: ({ body }) => ({
+        url: `tests/answer`,
         method: "PUT",
         body,
       }),
@@ -91,6 +91,8 @@ export const testsApi = createApi({
 export const {
   useGetTestsQuery,
   useGetTestQuery,
+  useSendTestMutation,
+  useSendAnswersMutation,
   useAddTestMutation,
   useDeleteTestMutation,
   usePathTestMutation,

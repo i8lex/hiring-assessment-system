@@ -2,6 +2,8 @@ import React, { FC } from "react";
 import { Link } from "react-router-dom";
 import { ReactComponent as X } from "../../assets/IconsSet/x-close.svg";
 import { useDeleteTestMutation } from "../../redux/tests/testsApi";
+import { useSelector } from "react-redux";
+import { RootState } from "../../types";
 
 type TestCardProps = {
   id: string;
@@ -16,6 +18,8 @@ export const TestCard: FC<TestCardProps> = ({
   id,
   description,
 }) => {
+  const answers = useSelector((state: RootState) => state.auth.answers);
+  const isCompleted = answers.map((answer) => answer.testId).includes(id);
   const [deleteTest] = useDeleteTestMutation();
   return (
     <Link

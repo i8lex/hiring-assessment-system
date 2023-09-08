@@ -59,7 +59,6 @@ export const AudioPlayer: FC<AudioPlayerProps> = ({
 
   useEffect(() => {
     if (audioPath === "") {
-      console.log("stop");
       playAudio();
       waveform.current?.pause();
       setIsPlaying(false);
@@ -123,7 +122,7 @@ export const AudioPlayer: FC<AudioPlayerProps> = ({
     <div className="flex w-full items-center justify-between gap-1 p-0 tablet:gap-[17.5px] ">
       <div
         className={
-          "flex w-full items-center justify-between gap-3 rounded-md bg-orange-10 px-4 py-1 tablet:gap-[23px] tablet:px-6 tablet:w-[530px]"
+          "flex w-full items-center justify-between gap-3 rounded-md bg-orange-10 px-4 py-1 tablet:gap-[23px] tablet:px-6 tablet:w-[530px] desktop:w-[800px]"
         }
       >
         <div className="flex items-center p-0 tablet:gap-4">

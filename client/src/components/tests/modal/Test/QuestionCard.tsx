@@ -90,7 +90,6 @@ export const QuestionCard: FC<QuestionCardProps> = ({
         console.error(responseData.error);
       } else {
         const data = responseData.data;
-        console.log(data.file);
 
         setValue(`questions.${index}.file`, data.file._id);
         reader.addEventListener("load", () => {
@@ -102,8 +101,6 @@ export const QuestionCard: FC<QuestionCardProps> = ({
         });
         reader.readAsDataURL(file);
       }
-
-      console.log(filePath);
     }
   };
   const handleDeleteFile = (fileId: string) => {
@@ -111,8 +108,6 @@ export const QuestionCard: FC<QuestionCardProps> = ({
     setFilePath({ id: "", path: "", mimeType: "" });
     setValue(`questions.${index}.file`, undefined);
   };
-  console.log(getValues(`questions.${index}.file`));
-
   return (
     <>
       <div

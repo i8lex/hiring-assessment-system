@@ -4,9 +4,10 @@ interface ITest extends Document {
   title: string;
   description: string;
   createdBy: mongoose.Types.ObjectId;
+  timerEnabled: string;
+  timer: number;
+  answeredUsers: mongoose.Types.ObjectId[];
   questions: {
-    timerEnabled: string;
-    timer: string;
     question: string;
     file: string;
     answers: { answer: string; isCorrect: boolean }[];
@@ -14,7 +15,6 @@ interface ITest extends Document {
 }
 const questionSchema = new Schema({
   question: { type: String, required: true },
-  file: { type: Object },
   answers: [
     {
       answer: { type: String, required: true },
@@ -25,6 +25,10 @@ const questionSchema = new Schema({
 const testSchema: Schema = new Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
+  file: { type: Object },
+  timerEnabled: { type: Boolean, required: true },
+  timer: { type: Number },
+  answeredUsers: { type: [mongoose.Types.ObjectId] },
   createdBy: { type: mongoose.Types.ObjectId, ref: "User", required: true },
   questions: { type: [questionSchema], required: true },
 });
