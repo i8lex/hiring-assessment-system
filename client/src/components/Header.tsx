@@ -17,7 +17,7 @@ export const Header = () => {
   };
 
   return (
-    <header className="bg-green-10 flex items-center justify-end tablet:gap-6 gap-4 p-4 tablet:p-6 ">
+    <header className="bg-green-10 flex items-center justify-end  gap-4 p-4 tablet:p-6 ">
       {isAuthenticated ? (
         <>
           <Link
@@ -36,13 +36,13 @@ export const Header = () => {
       ) : (
         <>
           <Link
-            className="text-dark-100 text-dispS3 px-4 py-2 border border-stroke rounded-md hover:bg-gray-10 hover:text-dark-100"
-            to="/registration"
+            className="text-dark-100 text-parL px-4 py-2 border border-stroke rounded-md hover:bg-gray-10 hover:text-dark-100"
+            to="/register"
           >
             Registration
           </Link>
           <Link
-            className="text-dark-100 text-dispS3 px-4 py-2 border border-stroke rounded-md hover:bg-gray-10 hover:text-dark-100"
+            className="text-dark-100 text-parL px-4 py-2 border border-stroke rounded-md hover:bg-gray-10 hover:text-dark-100"
             to="/login"
           >
             Login

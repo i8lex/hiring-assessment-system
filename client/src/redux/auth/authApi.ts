@@ -5,7 +5,7 @@ export const authApi = createApi({
   tagTypes: ["Authentications", "Error"],
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3001/api/" }),
   endpoints: (build) => ({
-    registration: build.mutation({
+    register: build.mutation({
       query: (body) => ({
         url: "/register",
         method: "POST",

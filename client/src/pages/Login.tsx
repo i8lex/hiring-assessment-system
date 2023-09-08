@@ -34,7 +34,7 @@ const LoginPage = () => {
         setTimeout(() => {
           navigate("/tests");
           // handleClose();
-        }, 3000);
+        }, 2000);
       } else {
         console.log(response.error);
       }
@@ -77,30 +77,51 @@ const LoginPage = () => {
       // setOpenModal(true);
     }
   };
+  const handleError = (errors: object) => {
+    console.warn(errors);
+  };
   return (
     <>
       <div className="mx-auto mt-6">
-        <h1 className="text-dark-100 text-dispS3">Sign in</h1>
+        <h1 className="text-dark-100 text-dispS3 font-medium">Sign in</h1>
       </div>
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onSubmit, handleError)}
         noValidate
         method="post"
-        className="relative h-full w-full pt-5 tablet:pt-6"
+        className="relative h-full w-full pt-5 tablet:pt-6 flex flex-col gap-4 tablet:gap-6"
       >
-        <Input
-          isRequired={true}
-          className="w-64"
-          id="username"
-          {...register("username")}
-        />
-        <Input
-          isRequired={true}
-          className="w-64"
-          id="password"
-          {...register("password")}
-        />
-        <button type="submit" className="btn-primary w-64">
+        <div className="flex flex-col gap-1">
+          <p className="text-dark-100 text-parM">Login</p>
+          <Input
+            placeholder={"Enter your username"}
+            isRequired={true}
+            className="w-full tablet:w-[353px]"
+            id="username"
+            errorText={errors?.username?.message}
+            {...register("username", {
+              required: "Login is required",
+            })}
+          />
+        </div>
+        <div className="flex flex-col  gap-1">
+          <p className="text-dark-100 text-parM">Password</p>
+          <Input
+            placeholder={"Enter your password"}
+            isRequired={true}
+            className="w-full tablet:w-[353px]"
+            id="password"
+            errorText={errors?.password?.message}
+            {...register("password", {
+              required: "Password is required",
+            })}
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="font-medium text-white py-2 px-4 bg-orange-60 border border-stroke rounded-md w-full tablet:w-[150px]"
+        >
           Login
         </button>
       </form>

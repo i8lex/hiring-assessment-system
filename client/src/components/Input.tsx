@@ -7,6 +7,7 @@ export type InputProps = {
   label?: string;
   name?: string;
   id?: string;
+  type?: string;
   placeholder?: string;
   isRequired: boolean;
   className?: string;
@@ -23,6 +24,7 @@ export const Input: FC<InputProps> = forwardRef<HTMLInputElement, InputProps>(
       label,
       id = "title",
       name = "title",
+      type = "text",
       placeholder = "",
       className,
       inputClassName = "",
@@ -53,7 +55,7 @@ export const Input: FC<InputProps> = forwardRef<HTMLInputElement, InputProps>(
           </label>
         ) : null}
         <input
-          type="text"
+          type={type}
           id={id}
           required={isRequired}
           placeholder={placeholder}
