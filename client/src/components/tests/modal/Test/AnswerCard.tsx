@@ -102,7 +102,7 @@ export const AnswerCard: FC<TestCardProps> = ({
               control={control}
               render={({ field }) => {
                 return (
-                  // @ts-ignore
+                  //@ts-ignore
                   <input
                     type="checkbox"
                     {...field}
@@ -123,6 +123,7 @@ export const AnswerCard: FC<TestCardProps> = ({
                                 false,
                               );
                             }
+                            return null;
                           },
                         );
                       }
