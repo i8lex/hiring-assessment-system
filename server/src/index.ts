@@ -65,6 +65,7 @@ app.use(
 // });
 const allowedOrigins = [
   "https://hiring-assessment-test.netlify.app",
+  "https://master--hiring-assessment-test.netlify.app",
   "http://localhost:3000",
 ];
 
