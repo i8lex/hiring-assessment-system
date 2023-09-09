@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { Controller, useFormContext } from "react-hook-form";
 import { Menu, Transition } from "@headlessui/react";
@@ -12,11 +12,13 @@ import type { Test } from "../../../../types";
 import type { FC } from "react";
 
 type TestCardProps = {
+  answerType: string;
   questionIndex: number;
   index: number;
   removeAnswer: (value: number) => void;
 };
 export const AnswerCard: FC<TestCardProps> = ({
+  answerType = `Single`,
   questionIndex,
   index,
   removeAnswer,
@@ -95,6 +97,9 @@ export const AnswerCard: FC<TestCardProps> = ({
           <div className="flex flex-col justify-center">
             <Controller
               name={`questions.${questionIndex}.answers.${index}.isCorrect`}
+              disabled={
+                getValues(`questions.${questionIndex}.answerType`) === "Simple"
+              }
               control={control}
               render={({ field }) => {
                 return (
@@ -106,11 +111,12 @@ export const AnswerCard: FC<TestCardProps> = ({
                     onChange={() => {
                       field.onChange(!field.value);
                       if (
-                        watch(
+                        answerType === "Single" &&
+                        getValues(
                           `questions.${questionIndex}.answers.${index}.isCorrect`,
                         )
                       ) {
-                        watch(`questions.${questionIndex}.answers`).map(
+                        getValues(`questions.${questionIndex}.answers`).map(
                           (_, currentIndex) => {
                             if (currentIndex !== index) {
                               setValue(
@@ -133,7 +139,9 @@ export const AnswerCard: FC<TestCardProps> = ({
               isRequired={true}
               id={`questions.${questionIndex}.answers.${index}.text`}
               placeholder={
-                watch(`questions.${questionIndex}.answers.${index}.isCorrect`)
+                getValues(
+                  `questions.${questionIndex}.answers.${index}.isCorrect`,
+                )
                   ? "Correct answer"
                   : "Answer"
               }

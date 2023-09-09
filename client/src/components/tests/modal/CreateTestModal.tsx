@@ -29,7 +29,7 @@ export const CreateTestModal: FC<CreateTestModalProps> = ({
   const handleError = (errors: object) => {
     console.warn(errors);
   };
-  const { handleSubmit, reset, getValues, setValue } = useFormContext<Test>();
+  const { handleSubmit, reset, setValue } = useFormContext<Test>();
 
   const handleCreate = async (values: Test) => {
     try {

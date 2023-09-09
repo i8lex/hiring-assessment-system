@@ -13,6 +13,7 @@ import clsx from "clsx";
 import { addAnswer } from "../redux/auth/authSlice";
 import { CreateTestModal } from "../components/tests/modal/CreateTestModal";
 import { FormProvider, useForm } from "react-hook-form";
+
 const TestPage = () => {
   const methods = useForm<Test>({
     defaultValues: {
@@ -23,6 +24,7 @@ const TestPage = () => {
       questions: [
         {
           question: "",
+          answerType: "Single",
           file: "",
           fileData: {
             file: "",
@@ -64,6 +66,7 @@ const TestPage = () => {
       question: "",
       answer: "",
       isCorrect: false,
+      userAnswer: "",
     })),
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -128,11 +131,20 @@ const TestPage = () => {
     await refetch();
   };
   const totalScore = answers.testState.reduce((accumulator, answer) => {
+    const userAnswer = answer.userAnswer || "";
     if (answer.isCorrect) {
       return accumulator + 1;
+    } else if (
+      userAnswer &&
+      userAnswer.toLowerCase() === answer.answer.toLowerCase()
+    ) {
+      console.log("2");
+      return accumulator + 3;
+    } else {
+      return accumulator;
     }
-    return accumulator;
   }, 0);
+
   return (
     <>
       <div className=" flex flex-col gap-4">

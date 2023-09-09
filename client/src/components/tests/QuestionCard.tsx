@@ -18,7 +18,8 @@ type QuestionCardProps = {
     };
     question: string;
     file: string;
-    answers: { answer: string; isCorrect: boolean }[];
+    answerType: string;
+    answers: { answer: string; isCorrect: boolean; userAnswer?: string }[];
   };
   isPreview?: boolean;
   index: number;
@@ -80,7 +81,15 @@ export const QuestionCard: FC<QuestionCardProps> = ({
         {question.answers.map((answer, answerIndex) => {
           return (
             <div key={answerIndex} className="flex items-center gap-2">
-              <div className="flex items-center gap-2">
+              <div
+                className={clsx(
+                  question.answerType === "Single" ||
+                    question.answerType === "Multiple"
+                    ? "gap-2"
+                    : "",
+                  "flex items-center ",
+                )}
+              >
                 <div
                   onClick={() => {
                     if (answers.testState[index].answer && role === "user") {
@@ -106,22 +115,54 @@ export const QuestionCard: FC<QuestionCardProps> = ({
                   }}
                   className={clsx(
                     isPreview ? "" : "cursor-pointer",
-                    "flex h-4 w-4  items-center justify-center rounded border border-stroke p-0 text-orange-100 shadow-sm focus:border-orange-100 focus:ring focus:ring-orange-100 focus:ring-opacity-50 focus:ring-offset-0",
+                    question.answerType === "Single" ||
+                      question.answerType === "Multiple"
+                      ? "border border-stroke h-4 w-4"
+                      : "",
+                    "flex items-center justify-center rounded  p-0 text-orange-100 shadow-sm focus:border-orange-100 focus:ring focus:ring-orange-100 focus:ring-opacity-50 focus:ring-offset-0",
                   )}
                 >
                   {checked[answerIndex] &&
+                  question.answerType === "Single" &&
                   checked[answerIndex] === answer.isCorrect ? (
                     <CheckBoxIcon className="h-4 w-4 p-0 text-white" />
                   ) : null}
                   {checked[answerIndex] &&
+                  question.answerType === "Single" &&
                   checked[answerIndex] !== answer.isCorrect ? (
                     <CheckBoxFalse className="h-4 w-4 p-0 text-white" />
                   ) : null}
                 </div>
 
-                <p className="text-parS font-medium text-dark-100">
-                  {answer.answer}
-                </p>
+                {question.answerType === "Single" ||
+                question.answerType === "Multiple" ? (
+                  <p className="text-parS font-medium text-dark-100">
+                    {answer.answer}
+                  </p>
+                ) : (
+                  <input
+                    type={"text"}
+                    placeholder={"Enter your answer here..."}
+                    className={
+                      "h-[38px] w-full tablet:w-[389px] rounded-md text-parS placeholder:text-parS placeholder:font-normal focus:border-orange-40 focus:ring-orange-40 focus:ring-1 focus:outline-none  px-3 autofill:text-pars box-border"
+                    }
+                    onChange={(e) => {
+                      console.log(answers);
+                      setAnswers((prevAnswers) => {
+                        const newAnswers = { ...prevAnswers };
+                        const newTestState = [...newAnswers.testState];
+                        newTestState[index] = {
+                          ...newTestState[index],
+                          answer: answer.answer,
+                          userAnswer: e.target.value,
+                          isCorrect: answer.isCorrect,
+                        };
+                        newAnswers.testState = newTestState;
+                        return newAnswers;
+                      });
+                    }}
+                  />
+                )}
               </div>
             </div>
           );

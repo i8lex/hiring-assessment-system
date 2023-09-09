@@ -21,7 +21,7 @@ export type Test = {
     question: string;
     file: string;
     fileData: { _id?: string; file: string; mimeType: string };
-
+    answerType: string;
     answers: { answer: string; isCorrect: boolean }[];
   }[];
 };
@@ -33,6 +33,7 @@ export type Answer = {
     question: string;
     answer: string;
     isCorrect: boolean;
+    userAnswer: string;
   }[];
 };
 export type User = {

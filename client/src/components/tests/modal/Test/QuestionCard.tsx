@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
-import { useFieldArray, useFormContext } from "react-hook-form";
-import { Menu, Transition } from "@headlessui/react";
+import { Controller, useFieldArray, useFormContext } from "react-hook-form";
+import { Listbox, Menu, Transition } from "@headlessui/react";
 import clsx from "clsx";
 import { Input } from "../../../Input";
 import { AnswerCard } from "./AnswerCard";
@@ -12,7 +12,8 @@ import { handleDnDUtil } from "../../../../utils/handleDnDUtil";
 import type { Test } from "../../../../types";
 import type { FC } from "react";
 import { AudioPlayer } from "../../../AudioPlayer";
-
+import { ReactComponent as ChevronUp } from "../../../../assets/IconsSet/dropdown-up.svg";
+import { ReactComponent as ChevronDown } from "../../../../assets/IconsSet/dropdown.svg";
 type QuestionCardProps = {
   isSuccess: boolean;
   index: number;
@@ -75,7 +76,6 @@ export const QuestionCard: FC<QuestionCardProps> = ({
     [handleDnDUtil, index],
   );
   useEffect(() => {
-    console.log(isSuccess);
     if (isSuccess) {
       setFilePath({
         path: getValues(`questions.${index}.fileData.file`),
@@ -100,7 +100,6 @@ export const QuestionCard: FC<QuestionCardProps> = ({
       });
       reader.readAsDataURL(file);
     }
-    // }
   };
 
   const handleDeleteFile = () => {
@@ -109,6 +108,15 @@ export const QuestionCard: FC<QuestionCardProps> = ({
     setValue(`questions.${index}.fileData.file`, "");
     setValue(`questions.${index}.fileData.mimeType`, "");
   };
+  useEffect(() => {
+    if (getValues(`questions.${index}.answerType`) === "Simple") {
+      getValues(`questions.${index}.answers`).map((_, index) => {
+        if (index !== 0) {
+          remove(index);
+        }
+      });
+    }
+  }, [getValues(`questions.${index}.answerType`)]);
   return (
     <>
       <div
@@ -296,15 +304,90 @@ export const QuestionCard: FC<QuestionCardProps> = ({
             </>
           )}
         </div>
+        <div className="flex items-center justify-between w-full">
+          <p className=" text-parS text-dark-100 tablet:mb-3">
+            Choose answer type
+          </p>
+          <Controller
+            name={`questions.${index}.answerType`}
+            control={control}
+            render={({ field }) => {
+              return (
+                <Listbox
+                  {...field}
+                  value="Single"
+                  onChange={(value) => {
+                    field.onChange(value);
+                  }}
+                >
+                  {({ open }) => (
+                    <>
+                      <div className="relative right-0 justify-self-end my-2 desktop:-mt-0.5">
+                        <Listbox.Button
+                          className={
+                            "flex h-[40px] w-full justify-between rounded-md border border-stroke  align-middle font-medium tablet:h-[30px] tablet:w-[230px]"
+                          }
+                        >
+                          <div className="flex justify-center py-[9px] px-[16px] text-parS text-[#374151]  tablet:py-[5px]  tablet:text-quot">
+                            {getValues(`questions.${index}.answerType`)}
+                          </div>
+                          {open ? (
+                            <ChevronDown className="my-auto ml-2 mr-3.5 h-5 w-5 text-dark-40" />
+                          ) : (
+                            <ChevronUp className="my-auto ml-2 mr-3.5 h-5 w-5 text-dark-40" />
+                          )}
+                        </Listbox.Button>
+                        <Transition
+                          as={Fragment}
+                          leave="transition ease-in duration-100"
+                          leaveFrom="opacity-100"
+                          leaveTo="opacity-0"
+                        >
+                          <Listbox.Options className="absolute  z-40 mt-0.5 max-h-[152px] w-full overflow-y-auto rounded-md border border-[#E9EBEE] bg-white scrollbar scrollbar-thumb-gray-60 scrollbar-thumb-rounded-lg scrollbar-w-[3px] tablet:w-[187px]">
+                            <Listbox.Option
+                              className={({ active }) =>
+                                clsx(
+                                  active ? "bg-[#F3F4F6]" : "bg-white",
+                                  "flex h-[38px] cursor-pointer flex-row px-4 py-2",
+                                )
+                              }
+                              value="Single"
+                            >
+                              <span className="text-quot font-normal text-dark-80">
+                                Single
+                              </span>
+                            </Listbox.Option>
 
-        <p className=" self-start text-parS text-dark-100 tablet:mb-3">
-          Answers
-        </p>
+                            <Listbox.Option
+                              className={({ active }) =>
+                                clsx(
+                                  active ? "bg-[#F3F4F6]" : "bg-white",
+                                  "flex h-[38px] cursor-pointer flex-row px-4 py-2",
+                                )
+                              }
+                              value="Simple"
+                            >
+                              <span className="text-quot font-normal text-dark-80">
+                                Simple
+                              </span>
+                            </Listbox.Option>
+                          </Listbox.Options>
+                        </Transition>
+                      </div>
+                    </>
+                  )}
+                </Listbox>
+              );
+            }}
+          />
+        </div>
+
         <div className="flex w-full items-center justify-start">
           <div className="flex w-full flex-col p-0">
             {fields.map((answer, currentIndex) => {
               return (
                 <AnswerCard
+                  answerType={getValues(`questions.${index}.answerType`)}
                   key={answer.id}
                   removeAnswer={remove}
                   questionIndex={index}
@@ -316,7 +399,13 @@ export const QuestionCard: FC<QuestionCardProps> = ({
         </div>
         <button
           type="button"
-          className="text-parS hover:bg-orange-20 mt-2 mb-4 py-2 rounded-md  w-full bg-orange-10 text-orange-100 tablet:mt-3 tablet:mb-6 tablet:w-[389px] tablet:px-2"
+          disabled={watch(`questions.${index}.answerType`) === "Simple"}
+          className={clsx(
+            watch(`questions.${index}.answerType`) === "Simple"
+              ? " bg-dark-20 text-dark-40"
+              : "bg-orange-10 hover:bg-orange-20 text-orange-100",
+            "text-parS  mt-2 mb-4 py-2 rounded-md  w-full   tablet:mt-3 tablet:mb-6 tablet:w-[389px] tablet:px-2",
+          )}
           onClick={() => {
             append({ answer: "", isCorrect: false });
           }}

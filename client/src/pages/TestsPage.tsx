@@ -8,11 +8,7 @@ import { CreateTestModal } from "../components/tests/modal/CreateTestModal";
 import { FormProvider, useForm } from "react-hook-form";
 
 const TestsPage = () => {
-  const {
-    data: tests = [] as Test[] | never[],
-    isLoading,
-    refetch,
-  } = useGetTestsQuery();
+  const { data: tests = [] as Test[] | never[] } = useGetTestsQuery();
   const navigate = useNavigate();
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated,
@@ -31,7 +27,12 @@ const TestsPage = () => {
       questions: [
         {
           question: "",
+          answerType: "Single",
           file: "",
+          fileData: {
+            file: "",
+            mimeType: "",
+          },
           answers: [
             { answer: "", isCorrect: true },
             { answer: "", isCorrect: false },

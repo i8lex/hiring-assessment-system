@@ -11,7 +11,8 @@ interface ITest extends Document {
     question: string;
     file: string;
     fileData: Object;
-    answers: { answer: string; isCorrect: boolean }[];
+    answerType: string;
+    answers: { answer: string; isCorrect: boolean; userAnswer?: string }[];
   }[];
 }
 const fileDataSchema = new Schema({
@@ -23,10 +24,12 @@ const questionSchema = new Schema({
   question: { type: String, required: true },
   file: { type: String },
   fileData: fileDataSchema,
+  answerType: { type: String },
   answers: [
     {
       answer: { type: String, required: true },
-      isCorrect: { type: Boolean, required: true },
+      userAnswer: { type: String },
+      isCorrect: { type: Boolean },
     },
   ],
 });

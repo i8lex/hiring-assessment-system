@@ -1,6 +1,5 @@
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { useRegisterMutation } from "../redux/auth/authApi";
 import { Input } from "../components/Input";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
@@ -44,48 +43,12 @@ const RegisterPage = () => {
         setTimeout(() => {
           reset();
           navigate("/login");
-          // handleClose();
         }, 2000);
       } else {
         console.log(response.error);
       }
-
-      // if (data.token) {
-      //   dispatch(loginSuccess(data.token));
-      //   setTimeout(() => {
-      //     navigate("/tests");
-      //     // handleClose();
-      //   }, 3000);
-      // }
-      // if (error) {
-      //   setMessage(error.data.error);
-      //   const { confirmed } = error.data;
-      //   setConfirmed(confirmed);
-      //   if (!confirmed && confirmed !== undefined) {
-      //     setEmail(values.email);
-      //     return setOpenModal(true);
-      //   } else {
-      //     setOpenModal(true);
-      //     setTimeout(() => handleClose(), 3000);
-      //   }
-      // } else {
-      //   const { message, confirmed } = data;
-      //   setMessage(message);
-      //   setConfirmed(confirmed);
-      //   setOpenModal(true);
-      //
-      //   if (data.token && confirmed === true) {
-      //     dispatch(loginSuccess(data.token));
-      //     setTimeout(() => {
-      //       navigate("/tests");
-      //       // handleClose();
-      //     }, 3000);
-      //   }
-      // }
     } catch (err) {
       console.log(err);
-      // setMessage(err.message);
-      // setOpenModal(true);
     }
   };
   const handleError = (errors: object) => {

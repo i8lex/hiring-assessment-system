@@ -138,6 +138,7 @@ export const TestCard = () => {
                 file: "",
                 mimeType: "",
               },
+              answerType: "Single",
               answers: [
                 { answer: "", isCorrect: false },
                 { answer: "", isCorrect: true },
