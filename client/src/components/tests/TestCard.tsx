@@ -22,7 +22,6 @@ export const TestCard: FC<TestCardProps> = ({
   const isCompleted = answers.map((answer) => answer.testId).includes(id!);
   const role = useSelector((state: RootState) => state.auth.role);
   const [deleteTest] = useDeleteTestMutation();
-
   return (
     <div className="p-4 flex items-center tablet:p-6 border border-stroke rounded-xl shadow-md shadow-gray-60 hover:scale-[1.02] transition-all">
       <Link

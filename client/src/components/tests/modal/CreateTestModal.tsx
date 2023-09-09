@@ -55,7 +55,7 @@ export const CreateTestModal: FC<CreateTestModalProps> = ({
       setValue("timer", test.timer);
       setValue("questions", test.questions);
     }
-  }, [test, isModalOpen]);
+  }, [test, isModalOpen, setValue]);
   return (
     <>
       <Transition show={isModalOpen} as={Fragment}>

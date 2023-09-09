@@ -23,7 +23,8 @@ export const usersApi = createApi({
   reducerPath: "usersApi",
   tagTypes: ["Users", "User"],
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.PROD_URL || process.env.URL,
+    baseUrl:
+      "http://localhost:3001/api" || process.env.PROD_URL || process.env.URL,
     prepareHeaders,
   }),
 

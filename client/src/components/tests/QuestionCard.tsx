@@ -57,7 +57,7 @@ export const QuestionCard: FC<QuestionCardProps> = ({
       newAnswers.testState = newTestState;
       return newAnswers;
     });
-  }, [isSuccess]);
+  }, [isSuccess, index, question.question, setAnswers]);
   return (
     <div className="flex flex-col gap-4">
       <p className="text-parS font-medium text-dark-100">{`${index + 1}. ${

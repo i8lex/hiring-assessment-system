@@ -7,8 +7,6 @@ import { Input } from "../../Input";
 export const CreateTestMarkup = () => {
   const {
     register,
-    control,
-    setValue,
     formState: { errors },
   } = useFormContext<Test>();
   return (

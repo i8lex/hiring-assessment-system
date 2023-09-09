@@ -82,11 +82,7 @@ export const QuestionCard: FC<QuestionCardProps> = ({
         mimeType: getValues(`questions.${index}.fileData.mimeType`),
       });
     }
-  }, [
-    isSuccess,
-    getValues(`questions.${index}.fileData.file`),
-    getValues(`questions.${index}.fileData.mimeType`),
-  ]);
+  }, [getValues, index, isSuccess]);
 
   const onSelectFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -116,11 +112,11 @@ export const QuestionCard: FC<QuestionCardProps> = ({
     if (getValues(`questions.${index}.answerType`) === "Simple") {
       getValues(`questions.${index}.answers`).map((_, index) => {
         if (index !== 0) {
-          remove(index);
+          return remove(index);
         }
       });
     }
-  }, [getValues(`questions.${index}.answerType`)]);
+  }, [getValues, index]);
   return (
     <>
       <div

@@ -81,7 +81,7 @@ const TestPage = () => {
         setAnswers(currentAnswer);
       }
     }
-  }, [isSuccess]);
+  }, [isSuccess, test?._id, allAnswers, test?.timer]);
 
   useEffect(() => {
     if (minutes && isTestStarted) {

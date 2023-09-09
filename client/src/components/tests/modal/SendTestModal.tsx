@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Dialog, Menu, Transition } from "@headlessui/react";
+import { Dialog, Transition } from "@headlessui/react";
 import { ReactComponent as X } from "../../../assets/IconsSet/x-close.svg";
 
 import { useGetUsersQuery } from "../../../redux/users/usersApi";

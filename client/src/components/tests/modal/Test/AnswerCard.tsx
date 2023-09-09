@@ -118,7 +118,7 @@ export const AnswerCard: FC<TestCardProps> = ({
                         getValues(`questions.${questionIndex}.answers`).map(
                           (_, currentIndex) => {
                             if (currentIndex !== index) {
-                              setValue(
+                              return setValue(
                                 `questions.${questionIndex}.answers.${currentIndex}.isCorrect`,
                                 false,
                               );
