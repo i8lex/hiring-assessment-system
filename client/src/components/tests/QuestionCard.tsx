@@ -37,7 +37,6 @@ export const QuestionCard: FC<QuestionCardProps> = ({
   );
   const [filePath, setFilePath] = useState({ path: "", mimeType: "" });
 
-  // const { data: file, isSuccess } = useGetFileQuery(question.file);
   useEffect(() => {
     if (question.fileData.file) {
       setFilePath({
@@ -67,15 +66,12 @@ export const QuestionCard: FC<QuestionCardProps> = ({
         question.fileData.mimeType.startsWith("image/") ? (
           <img
             className="w-[200px] h-[200px] object-cover rounded-2xl border border-stroke overflow-hidden"
-            // src={`data:${file?.mimetype};base64,${file?.buffer.toString()}`}
-            // src={question.fileData.file}
             src={filePath.path}
             alt="question pictures"
           />
         ) : (
           <AudioPlayer
             audioPath={question.fileData.file}
-            // audioPath={filePath.path}
             index={`${question.fileData._id}${index.toString()}`}
           />
         )

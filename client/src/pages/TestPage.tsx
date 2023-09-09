@@ -68,7 +68,6 @@ const TestPage = () => {
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const isCompleted = test?.answeredUsers.includes(userId);
-  console.log(isCompleted);
   useEffect(() => {
     if (isSuccess) {
       setMinutes(test?.timer);

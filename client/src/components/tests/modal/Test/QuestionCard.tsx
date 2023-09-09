@@ -88,17 +88,6 @@ export const QuestionCard: FC<QuestionCardProps> = ({
     if (e.target.files && e.target.files.length > 0) {
       const reader = new FileReader();
       const file = e.target.files[0];
-      // const formData = new FormData();
-      // formData.append("file", file);
-      // const responseData = await addFile(formData);
-      //
-      // if ("error" in responseData) {
-      //   console.error(responseData.error);
-      // } else {
-      // const data = responseData.data;
-      // console.log(data);
-      // setValue(`questions.${index}.file`, data.file._id);
-      console.log(getValues(`questions.${index}.file`));
       reader.addEventListener("load", () => {
         setValue(`questions.${index}.fileData`, {
           file: reader.result?.toString() || "",
@@ -113,15 +102,8 @@ export const QuestionCard: FC<QuestionCardProps> = ({
     }
     // }
   };
-  // useEffect(() => {
-  //   setFilePath({
-  //     id: getValues(`questions.${index}.fileData._id`),
-  //     path: getValues(`questions.${index}.fileData.file`),
-  //     mimeType: getValues(`questions.${index}.fileData.mimeType`),
-  //   });
-  // }, [getValues(`questions.${index}.fileData.file`)]);
+
   const handleDeleteFile = () => {
-    // deleteFile(fileId);
     setFilePath({ path: "", mimeType: "" });
     setValue(`questions.${index}.file`, "");
     setValue(`questions.${index}.fileData.file`, "");
@@ -272,7 +254,6 @@ export const QuestionCard: FC<QuestionCardProps> = ({
               <>
                 <img
                   alt="Question file"
-                  // src={watch(`questions.${index}.fileData.file`)}
                   src={filePath.path}
                   className="w-full tablet:w-[389px] rounded-xl"
                 />

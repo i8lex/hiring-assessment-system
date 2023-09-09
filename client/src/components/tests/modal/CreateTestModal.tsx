@@ -34,7 +34,6 @@ export const CreateTestModal: FC<CreateTestModalProps> = ({
   const handleCreate = async (values: Test) => {
     try {
       if (!test) {
-        console.log(getValues("questions"));
         await addTest(values);
       }
       if (test) {
@@ -42,7 +41,6 @@ export const CreateTestModal: FC<CreateTestModalProps> = ({
         refetch && (await refetch());
       }
       await reset();
-      // unregister();
       toggleModal(false);
     } catch (e) {
       console.warn(e);
@@ -65,7 +63,6 @@ export const CreateTestModal: FC<CreateTestModalProps> = ({
           open={isModalOpen}
           onClose={() => {
             reset();
-            // unregister();
             toggleModal(false);
           }}
           className="relative z-50"
@@ -107,7 +104,6 @@ export const CreateTestModal: FC<CreateTestModalProps> = ({
                     onClick={() => {
                       toggleModal(false);
                       reset();
-                      // unregister();
                     }}
                   >
                     <X className="h-6 w-6 text-dark-40" />
