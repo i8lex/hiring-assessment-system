@@ -20,7 +20,7 @@ export const TestCard: FC<TestCardProps> = ({
 }) => {
   const answers = useSelector((state: RootState) => state.auth.answers);
   const isCompleted = answers.map((answer) => answer.testId).includes(id!);
-
+  const role = useSelector((state: RootState) => state.auth.role);
   const [deleteTest] = useDeleteTestMutation();
 
   return (
@@ -46,14 +46,16 @@ export const TestCard: FC<TestCardProps> = ({
           </div>
         </div>
       </Link>
-      <div
-        onClick={() => {
-          deleteTest(id);
-        }}
-        className="ml-3  hidden h-6 w-6 cursor-pointer p-0 text-dark-40 tablet:block"
-      >
-        <X className="h-6 w-6 text-dark-40" />
-      </div>
+      {role === "admin" ? (
+        <div
+          onClick={() => {
+            deleteTest(id);
+          }}
+          className="ml-3  hidden h-6 w-6 cursor-pointer p-0 text-dark-40 tablet:block"
+        >
+          <X className="h-6 w-6 text-dark-40" />
+        </div>
+      ) : null}
     </div>
   );
 };
