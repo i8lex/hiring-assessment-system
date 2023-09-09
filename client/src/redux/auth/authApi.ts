@@ -4,8 +4,7 @@ export const authApi = createApi({
   reducerPath: "authApi",
   tagTypes: ["Authentications", "Error"],
   baseQuery: fetchBaseQuery({
-    baseUrl:
-      "http://localhost:3001/api" || process.env.PROD_URL || process.env.URL,
+    baseUrl: process.env.PROD_URL || process.env.URL,
   }),
   endpoints: (build) => ({
     register: build.mutation({

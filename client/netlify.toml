@@ -1,0 +1,9 @@
+[build]
+base = "hiring-assessment-test"
+command = "npm run build"
+publish = "hiring-assessment-test/build"
+
+    [[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200
