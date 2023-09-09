@@ -5,8 +5,12 @@ interface IUser extends Document {
   username: string;
   email: string;
   password: string;
+  age: number;
+  firstname: string;
+  lastname: string;
   role: "user" | "admin";
   tests: mongoose.Types.ObjectId[];
+  answers: [];
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
@@ -15,7 +19,7 @@ const userSchema: Schema = new Schema({
     type: String,
     unique: true,
     minlength: [3, "Username must be at least 3 characters long"],
-    maxlength: [32, "Username must be at most 32 characters long"],
+    maxlength: [86, "Username must be at most 32 characters long"],
     required: true,
   },
   email: {
@@ -35,6 +39,19 @@ const userSchema: Schema = new Schema({
       "Password must contain at least one lowercase letter, one uppercase letter and one number",
     ],
   },
+  age: {
+    type: Number,
+    required: false,
+  },
+  firstname: {
+    type: String,
+    required: false,
+  },
+  lastname: {
+    type: String,
+    required: false,
+  },
+  answers: [],
   role: { type: String, required: true, enum: ["user", "admin"] },
   tests: [{ type: mongoose.Types.ObjectId, ref: "Test" }],
 });

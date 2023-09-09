@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import User from "../models/User";
+import User from "../models/userModel";
 import * as jwt from "jsonwebtoken";
 import multer from "multer";
 import * as dotenv from "dotenv";
@@ -10,7 +10,8 @@ const upload = multer({ storage: storage });
 dotenv.config();
 router.post("/register", upload.none(), async (req: Request, res: Response) => {
   try {
-    const { username, password, role, email } = req.body;
+    const { username, password, role, email, firstname, lastname, age } =
+      req.body;
 
     const existingUser = await User.findOne({ username });
     const existingEmail = await User.findOne({ email });
@@ -21,7 +22,15 @@ router.post("/register", upload.none(), async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Username is already taken" });
     }
 
-    const user = new User({ username, password, role, email });
+    const user = new User({
+      username,
+      password,
+      role,
+      email,
+      firstname,
+      lastname,
+      age,
+    });
     await user.save();
     res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
@@ -48,9 +57,15 @@ router.post("/login", upload.none(), async (req: Request, res: Response) => {
           expiresIn: "24h",
         },
       );
-      res.cookie("token", token, { httpOnly: true });
+      // res.cookie("token", token, { httpOnly: true });
 
-      return res.status(200).json({ message: "Authentication successful" });
+      return res.status(200).json({
+        message: "Authentication successful",
+        token,
+        role: user.role,
+        answers: user.answers,
+        userId: user._id,
+      });
     } else {
       return res.status(401).json({ error: "Authentication failed" });
     }
