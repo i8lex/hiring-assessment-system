@@ -30,7 +30,7 @@ db.on("error", console.error.bind(console, "Connection error:"));
 db.once("open", () => {
   console.log("Connected to mongoDB");
 });
-app.options("*", cors());
+// app.options("*", cors());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
@@ -63,7 +63,7 @@ app.use(
 //   );
 //   next();
 // });
-const allowedOrigins = ["https://master--hiring-assessment-test.netlify.app"];
+const allowedOrigins = ["https://hiring-assessment-test.netlify.app"];
 
 app.use(
   cors({

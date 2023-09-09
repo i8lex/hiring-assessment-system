@@ -82,7 +82,7 @@ export const QuestionCard: FC<QuestionCardProps> = ({
         mimeType: getValues(`questions.${index}.fileData.mimeType`),
       });
     }
-  }, [getValues, index, isSuccess]);
+  }, [getValues, getValues(`questions.${index}.answerType`), index, isSuccess]);
 
   const onSelectFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -114,7 +114,7 @@ export const QuestionCard: FC<QuestionCardProps> = ({
         if (index !== 0) {
           return remove(index);
         }
-        return null;
+        return;
       });
     }
   }, [getValues, index, remove]);
