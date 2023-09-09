@@ -36,9 +36,9 @@ export const CreateTestModal: FC<CreateTestModalProps> = ({
       if (!test) {
         await addTest(values);
       }
-      if (test) {
+      if (test && refetch) {
         await pathTest({ id: test._id, body: values });
-        refetch && (await refetch());
+        await refetch;
       }
       await reset();
       toggleModal(false);
