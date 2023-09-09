@@ -34,14 +34,14 @@ app.options("*", cors());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-  }),
-);
+// app.use(
+//   cors({
+//     origin: "http://localhost:3000",
+//     methods: ["GET", "POST", "PUT", "DELETE"],
+//     allowedHeaders: ["Content-Type", "Authorization"],
+//     credentials: true,
+//   }),
+// );
 app.use(express.json());
 // app.use(cookieParser());
 app.use(
@@ -63,11 +63,7 @@ app.use(
 //   );
 //   next();
 // });
-const allowedOrigins = [
-  "https://hiring-assessment-test.netlify.app",
-  "https://master--hiring-assessment-test.netlify.app",
-  "http://localhost:3000",
-];
+const allowedOrigins = ["https://master--hiring-assessment-test.netlify.app"];
 
 app.use(
   cors({
