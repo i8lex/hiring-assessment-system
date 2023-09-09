@@ -17,9 +17,9 @@ export type Test = {
   timer: number;
   answeredUsers: string[];
   questions: {
-    _id?: string;
+    _id: string;
     question: string;
-    file?: string;
+    file: string;
 
     answers: { answer: string; isCorrect: boolean }[];
   }[];

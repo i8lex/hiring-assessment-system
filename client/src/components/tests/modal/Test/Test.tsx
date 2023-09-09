@@ -131,6 +131,7 @@ export const TestCard = () => {
           className="w-full text-parS tablet:w-[389px] px-4 py-2 bg-orange-80 border border-stroke rounded-md hover:bg-orange-100 text-white"
           onClick={() => {
             append({
+              _id: "",
               question: "",
               file: "",
               answers: [

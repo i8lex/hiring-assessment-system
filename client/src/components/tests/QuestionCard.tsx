@@ -12,7 +12,7 @@ type QuestionCardProps = {
   answers: Answer;
   question: {
     question: string;
-    file?: string;
+    file: string;
     answers: { answer: string; isCorrect: boolean }[];
   };
   isPreview?: boolean;
@@ -30,7 +30,7 @@ export const QuestionCard: FC<QuestionCardProps> = ({
     Array(question.answers.length).fill(false),
   );
 
-  const { data: file, isSuccess } = useGetFileQuery(question.file!);
+  const { data: file, isSuccess } = useGetFileQuery(question.file);
   useEffect(() => {
     setAnswers((prevAnswers) => {
       const newAnswers = { ...prevAnswers };
@@ -42,8 +42,7 @@ export const QuestionCard: FC<QuestionCardProps> = ({
       newAnswers.testState = newTestState;
       return newAnswers;
     });
-  }, []);
-
+  }, [isSuccess]);
   return (
     <div className="flex flex-col gap-4">
       <p className="text-parS font-medium text-dark-100">{`${index + 1}. ${
@@ -54,12 +53,14 @@ export const QuestionCard: FC<QuestionCardProps> = ({
           <img
             className="w-[200px] h-[200px] object-cover rounded-2xl border border-stroke overflow-hidden"
             src={`data:${file?.mimetype};base64,${file?.buffer.toString()}`}
+            // src={filePath.path}
             alt="question pictures"
           />
         ) : (
           <AudioPlayer
             audioPath={`data:${file?.mimetype};base64,${file?.buffer.toString()}`}
-            index={index}
+            // audioPath={filePath.path}
+            index={`${file._id}${file._id}`}
           />
         ))}
       <div className="flex flex-col gap-2">

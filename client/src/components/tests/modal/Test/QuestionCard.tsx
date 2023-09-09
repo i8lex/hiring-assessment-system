@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { Menu, Transition } from "@headlessui/react";
@@ -36,7 +36,9 @@ export const QuestionCard: FC<QuestionCardProps> = ({
   } = useFormContext<Test>();
   const [deleteFile] = useDeleteFileMutation();
   const [addFile] = useAddFileMutation();
-
+  const { data: fileData, isSuccess } = useGetFileQuery(
+    getValues("questions")[index].file,
+  );
   const { fields, append, remove } = useFieldArray({
     control,
     name: `questions.${index}.answers`,
@@ -78,6 +80,19 @@ export const QuestionCard: FC<QuestionCardProps> = ({
     }),
     [handleDnDUtil, index],
   );
+  const file = { id: "", path: "", mimeType: "" };
+  useEffect(() => {
+    if (isSuccess && fileData) {
+      setFilePath({
+        id: fileData._id,
+        path:
+          `data:${fileData?.mimetype};base64,${fileData?.buffer.toString()}` ||
+          "",
+        mimeType: fileData.mimetype,
+      });
+    }
+  }, [isSuccess]);
+
   const onSelectFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const reader = new FileReader();
@@ -90,8 +105,9 @@ export const QuestionCard: FC<QuestionCardProps> = ({
         console.error(responseData.error);
       } else {
         const data = responseData.data;
-
+        console.log(data);
         setValue(`questions.${index}.file`, data.file._id);
+        console.log(getValues(`questions.${index}.file`));
         reader.addEventListener("load", () => {
           setFilePath({
             id: data.file._id,
@@ -106,7 +122,7 @@ export const QuestionCard: FC<QuestionCardProps> = ({
   const handleDeleteFile = (fileId: string) => {
     deleteFile(fileId);
     setFilePath({ id: "", path: "", mimeType: "" });
-    setValue(`questions.${index}.file`, undefined);
+    setValue(`questions.${index}.file`, "");
   };
   return (
     <>
@@ -267,7 +283,7 @@ export const QuestionCard: FC<QuestionCardProps> = ({
               </>
             ) : (
               <div className=" flex items-center gap-2 mb-2">
-                <AudioPlayer index={index} audioPath={filePath.path} />
+                <AudioPlayer index={filePath.id} audioPath={filePath.path} />
                 <button
                   onClick={() => {
                     handleDeleteFile(filePath.id);

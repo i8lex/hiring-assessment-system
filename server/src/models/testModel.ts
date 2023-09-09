@@ -15,6 +15,7 @@ interface ITest extends Document {
 }
 const questionSchema = new Schema({
   question: { type: String, required: true },
+  file: { type: String },
   answers: [
     {
       answer: { type: String, required: true },
@@ -25,7 +26,6 @@ const questionSchema = new Schema({
 const testSchema: Schema = new Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
-  file: { type: Object },
   timerEnabled: { type: Boolean, required: true },
   timer: { type: Number },
   answeredUsers: { type: [mongoose.Types.ObjectId] },

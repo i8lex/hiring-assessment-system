@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import { ReactComponent as X } from "../../../assets/IconsSet/x-close.svg";
@@ -6,23 +6,27 @@ import { CreateTestMarkup } from "./CreateTestMarkup";
 import {
   useAddTestMutation,
   useDeleteTestMutation,
+  usePathTestMutation,
 } from "../../../redux/tests/testsApi";
 import type { Test } from "../../../types";
 import type { FC } from "react";
 
 export type CreateTestModalProps = {
-  testId?: string;
+  refetch?: () => void;
+  test?: Test;
   isModalOpen: boolean;
   toggleModal: (flag: boolean) => void;
 };
 
 export const CreateTestModal: FC<CreateTestModalProps> = ({
+  refetch,
   isModalOpen,
   toggleModal,
-  testId,
+  test,
 }) => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [addTest] = useAddTestMutation();
+  const [pathTest] = usePathTestMutation();
   const toggleMenu = () => {
     setIsOpenMenu(!isOpenMenu);
   };
@@ -35,18 +39,37 @@ export const CreateTestModal: FC<CreateTestModalProps> = ({
     formState: { errors },
     reset,
     getValues,
+    setValue,
+    // unregister,
   } = useFormContext<Test>();
 
   const handleCreate = async (values: Test) => {
     try {
-      await addTest(values);
+      if (!test) {
+        await addTest(values);
+      }
+      if (test) {
+        await pathTest({ id: test._id, body: values });
+        refetch && (await refetch());
+      }
       await reset();
+      // unregister();
       toggleModal(false);
     } catch (e) {
       console.warn(e);
     }
   };
 
+  useEffect(() => {
+    console.log(test);
+    if (test) {
+      setValue("title", test.title);
+      setValue("description", test.description);
+      setValue("timerEnabled", test.timerEnabled);
+      setValue("timer", test.timer);
+      setValue("questions", test.questions);
+    }
+  }, [test, isModalOpen]);
   return (
     <>
       <Transition show={isModalOpen} as={Fragment}>
@@ -54,6 +77,7 @@ export const CreateTestModal: FC<CreateTestModalProps> = ({
           open={isModalOpen}
           onClose={() => {
             reset();
+            // unregister();
             toggleModal(false);
           }}
           className="relative z-50"
@@ -87,7 +111,7 @@ export const CreateTestModal: FC<CreateTestModalProps> = ({
                 <div className="flex items-center justify-between border-y border-y-stroke bg-[#F9FAFB] px-4 py-3.5 tablet:border-t-0 tablet:px-6 tablet:py-4">
                   <Dialog.Title>
                     <div className="flex items-center gap-1">
-                      <div>{testId ? "Edit test" : "Create new test"}</div>
+                      <div>{test ? "Edit test" : "Create new test"}</div>
                     </div>
                   </Dialog.Title>
                   <button
@@ -95,6 +119,7 @@ export const CreateTestModal: FC<CreateTestModalProps> = ({
                     onClick={() => {
                       toggleModal(false);
                       reset();
+                      // unregister();
                     }}
                   >
                     <X className="h-6 w-6 text-dark-40" />
@@ -122,10 +147,9 @@ export const CreateTestModal: FC<CreateTestModalProps> = ({
                     </button>
                     <button
                       className="text-parS w-full tablet:w-fit px-4 py-2 bg-orange-80 border border-stroke rounded-xl hover:bg-orange-100 text-white"
-                      // text={exerciseId ? 'Save' : 'Add'}
                       type="submit"
                     >
-                      Add
+                      {test ? "Save" : "Add"}
                     </button>
                   </div>
                 </form>

@@ -11,7 +11,27 @@ import { Timer } from "../components/tests/Timer";
 import { SendTestModal } from "../components/tests/modal/SendTestModal";
 import clsx from "clsx";
 import { addAnswer } from "../redux/auth/authSlice";
+import { CreateTestModal } from "../components/tests/modal/CreateTestModal";
+import { FormProvider, useForm } from "react-hook-form";
 const TestPage = () => {
+  const methods = useForm<Test>({
+    defaultValues: {
+      title: "",
+      description: "",
+      timerEnabled: false,
+      timer: 0,
+      questions: [
+        {
+          question: "",
+          file: "",
+          answers: [
+            { answer: "", isCorrect: true },
+            { answer: "", isCorrect: false },
+          ],
+        },
+      ],
+    },
+  });
   const navigate = useNavigate();
   const { id } = useParams();
   if (!id) {
@@ -29,6 +49,7 @@ const TestPage = () => {
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated,
   );
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const userId = useSelector((state: RootState) => state.auth.userId);
   const allAnswers = useSelector((state: RootState) => state.auth.answers);
   const [sendAnswer] = useSendAnswersMutation();
@@ -112,6 +133,15 @@ const TestPage = () => {
   return (
     <>
       <div className=" flex flex-col gap-4">
+        <button
+          className="self-end text-dark-100 font-semibold h-12 bg-orange-40 rounded border border-dark-90 shadow-sm shadow-dark-60 py-2 w-[130px]"
+          onClick={() => {
+            setIsEditModalOpen(true);
+          }}
+        >
+          {"Edit test"}
+        </button>
+
         <div className="text-dark-100 text-dispS2">{test?.title}</div>
         <div className="text-dark-80 text-parM">{test?.description}</div>
         <div className="flex flex-col gap-2 tablet:gap-0 tablet:flex-row justify-between items-center p-4 tablet:p-6 border border-stroke rounded-md">
@@ -204,6 +234,14 @@ const TestPage = () => {
             })}
           </div>
         ) : null}
+        <FormProvider {...methods}>
+          <CreateTestModal
+            refetch={refetch}
+            isModalOpen={isEditModalOpen}
+            toggleModal={setIsEditModalOpen}
+            test={test}
+          />
+        </FormProvider>
         <SendTestModal
           isModalOpen={isModalOpen}
           toggleModal={setIsModalOpen}

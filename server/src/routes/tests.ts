@@ -67,18 +67,14 @@ router.get("/tests/:id", async (req: Request, res: Response) => {
   }
 });
 
-router.patch(
-  "/tests/:id",
-  upload.none(),
-  async (req: Request, res: Response) => {
-    try {
-      const test = await Test.findByIdAndUpdate(req.params.id, req.body);
-      res.status(200).json(test);
-    } catch (error) {
-      res.status(500).json({ error });
-    }
-  },
-);
+router.put("/tests/:id", upload.none(), async (req: Request, res: Response) => {
+  try {
+    const test = await Test.findByIdAndUpdate(req.params.id, req.body);
+    res.status(200).json(test);
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+});
 
 router.put(
   "/tests/send/:id",

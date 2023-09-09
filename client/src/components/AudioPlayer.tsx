@@ -11,7 +11,7 @@ import type { FC } from "react";
 
 type AudioPlayerProps = {
   audioPath: string;
-  index: number;
+  index: string;
   audioFiles?: Blob[];
   isInModal?: boolean;
 };
