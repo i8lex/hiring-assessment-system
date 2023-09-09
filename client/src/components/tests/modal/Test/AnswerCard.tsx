@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { Controller, useFormContext } from "react-hook-form";
 import { Menu, Transition } from "@headlessui/react";
@@ -28,7 +28,6 @@ export const AnswerCard: FC<TestCardProps> = ({
     control,
     getValues,
     setValue,
-    watch,
     formState: { errors },
   } = useFormContext<Test>();
   const [isCanMove, setIsCanMove] = useState(false);

@@ -1,4 +1,5 @@
-import { Fragment, useEffect, useRef, useState } from "react";
+// eslint-disable-next-line
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import clsx from "clsx";
 import Wavesurfer from "wavesurfer.js";
@@ -51,7 +52,7 @@ export const AudioPlayer: FC<AudioPlayerProps> = ({
       setCurrentTime(waveform.current!.getCurrentTime());
     });
     waveform.current?.setVolume(volume);
-  }, []);
+  }, [audioPath, index, isInModal, volume]);
 
   useEffect(() => {
     waveform.current?.setVolume(volume);
@@ -68,7 +69,7 @@ export const AudioPlayer: FC<AudioPlayerProps> = ({
     if (currentTime === duration) {
       setIsPlaying(false);
     }
-  }, [currentTime]);
+  }, [currentTime, duration]);
   useEffect(() => {
     waveform.current?.stop();
   }, [audioFiles?.length]);
@@ -96,7 +97,6 @@ export const AudioPlayer: FC<AudioPlayerProps> = ({
     const newPlayed =
       event.nativeEvent.offsetX / event.currentTarget.offsetWidth;
     setVolume(newPlayed);
-    // playerRef?.current?.seekTo(newPlayed);
   };
   const handleLabelMouseDown = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,

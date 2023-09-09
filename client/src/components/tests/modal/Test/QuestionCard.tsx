@@ -82,7 +82,11 @@ export const QuestionCard: FC<QuestionCardProps> = ({
         mimeType: getValues(`questions.${index}.fileData.mimeType`),
       });
     }
-  }, [isSuccess]);
+  }, [
+    isSuccess,
+    getValues(`questions.${index}.fileData.file`),
+    getValues(`questions.${index}.fileData.mimeType`),
+  ]);
 
   const onSelectFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
