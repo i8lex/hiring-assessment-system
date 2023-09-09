@@ -108,6 +108,7 @@ export const QuestionCard: FC<QuestionCardProps> = ({
     setValue(`questions.${index}.fileData.file`, "");
     setValue(`questions.${index}.fileData.mimeType`, "");
   };
+  const answerType = watch(`questions.${index}.answerType`);
   useEffect(() => {
     if (getValues(`questions.${index}.answerType`) === "Simple") {
       getValues(`questions.${index}.answers`).map((_, index) => {
@@ -117,7 +118,7 @@ export const QuestionCard: FC<QuestionCardProps> = ({
         return index;
       });
     }
-  }, [getValues, index, remove]);
+  }, [getValues, answerType, index, remove]);
   return (
     <>
       <div
