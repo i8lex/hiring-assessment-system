@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Answer } from "../../types";
 type TestsState = {
   fileState: {
     file: string;

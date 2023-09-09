@@ -45,7 +45,7 @@ export const QuestionCard: FC<QuestionCardProps> = ({
         mimeType: question.fileData.mimeType,
       });
     }
-  }, [isSuccess]);
+  }, [isSuccess, question.fileData.file, question.fileData.mimeType]);
   useEffect(() => {
     setAnswers((prevAnswers) => {
       const newAnswers = { ...prevAnswers };
