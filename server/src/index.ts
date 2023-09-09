@@ -10,7 +10,6 @@ import cors from "cors";
 import * as dotenv from "dotenv";
 import testRoutes from "./routes/tests";
 import authRoutes from "./routes/auth";
-import fileRoutes from "./routes/file";
 import usersRoutes from "./routes/users";
 dotenv.config();
 
@@ -31,7 +30,8 @@ db.on("error", console.error.bind(console, "Connection error:"));
 db.once("open", () => {
   console.log("Connected to mongoDB");
 });
-
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(
   cors({
     origin: "*",
@@ -53,7 +53,6 @@ app.use(
 );
 app.use("/api", authRoutes);
 app.use("/api", testRoutes);
-app.use("/api/file", fileRoutes);
 app.use("/api", usersRoutes);
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

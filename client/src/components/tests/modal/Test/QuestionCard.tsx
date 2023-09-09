@@ -12,18 +12,15 @@ import { handleDnDUtil } from "../../../../utils/handleDnDUtil";
 import type { Test } from "../../../../types";
 import type { FC } from "react";
 import { AudioPlayer } from "../../../AudioPlayer";
-import {
-  useAddFileMutation,
-  useDeleteFileMutation,
-  useGetFileQuery,
-} from "../../../../redux/files/filesApi";
 
 type QuestionCardProps = {
+  isSuccess: boolean;
   index: number;
   removeQuestion: (value: number) => void;
 };
 
 export const QuestionCard: FC<QuestionCardProps> = ({
+  isSuccess,
   index,
   removeQuestion,
 }) => {
@@ -33,19 +30,16 @@ export const QuestionCard: FC<QuestionCardProps> = ({
     setValue,
     control,
     formState: { errors },
+    watch,
   } = useFormContext<Test>();
-  const [deleteFile] = useDeleteFileMutation();
-  const [addFile] = useAddFileMutation();
-  const { data: fileData, isSuccess } = useGetFileQuery(
-    getValues("questions")[index].file,
-  );
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: `questions.${index}.answers`,
   });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCanMove, setIsCanMove] = useState(false);
-  const [filePath, setFilePath] = useState({ id: "", path: "", mimeType: "" });
+  const [filePath, setFilePath] = useState({ path: "", mimeType: "" });
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -80,15 +74,12 @@ export const QuestionCard: FC<QuestionCardProps> = ({
     }),
     [handleDnDUtil, index],
   );
-  const file = { id: "", path: "", mimeType: "" };
   useEffect(() => {
-    if (isSuccess && fileData) {
+    console.log(isSuccess);
+    if (isSuccess) {
       setFilePath({
-        id: fileData._id,
-        path:
-          `data:${fileData?.mimetype};base64,${fileData?.buffer.toString()}` ||
-          "",
-        mimeType: fileData.mimetype,
+        path: getValues(`questions.${index}.fileData.file`),
+        mimeType: getValues(`questions.${index}.fileData.mimeType`),
       });
     }
   }, [isSuccess]);
@@ -97,32 +88,44 @@ export const QuestionCard: FC<QuestionCardProps> = ({
     if (e.target.files && e.target.files.length > 0) {
       const reader = new FileReader();
       const file = e.target.files[0];
-      const formData = new FormData();
-      formData.append("file", file);
-      const responseData = await addFile(formData);
-
-      if ("error" in responseData) {
-        console.error(responseData.error);
-      } else {
-        const data = responseData.data;
-        console.log(data);
-        setValue(`questions.${index}.file`, data.file._id);
-        console.log(getValues(`questions.${index}.file`));
-        reader.addEventListener("load", () => {
-          setFilePath({
-            id: data.file._id,
-            path: reader.result?.toString() || "",
-            mimeType: file.type,
-          });
+      // const formData = new FormData();
+      // formData.append("file", file);
+      // const responseData = await addFile(formData);
+      //
+      // if ("error" in responseData) {
+      //   console.error(responseData.error);
+      // } else {
+      // const data = responseData.data;
+      // console.log(data);
+      // setValue(`questions.${index}.file`, data.file._id);
+      console.log(getValues(`questions.${index}.file`));
+      reader.addEventListener("load", () => {
+        setValue(`questions.${index}.fileData`, {
+          file: reader.result?.toString() || "",
+          mimeType: file.type,
         });
-        reader.readAsDataURL(file);
-      }
+        setFilePath({
+          path: reader.result?.toString() || "",
+          mimeType: file.type,
+        });
+      });
+      reader.readAsDataURL(file);
     }
+    // }
   };
-  const handleDeleteFile = (fileId: string) => {
-    deleteFile(fileId);
-    setFilePath({ id: "", path: "", mimeType: "" });
+  // useEffect(() => {
+  //   setFilePath({
+  //     id: getValues(`questions.${index}.fileData._id`),
+  //     path: getValues(`questions.${index}.fileData.file`),
+  //     mimeType: getValues(`questions.${index}.fileData.mimeType`),
+  //   });
+  // }, [getValues(`questions.${index}.fileData.file`)]);
+  const handleDeleteFile = () => {
+    // deleteFile(fileId);
+    setFilePath({ path: "", mimeType: "" });
     setValue(`questions.${index}.file`, "");
+    setValue(`questions.${index}.fileData.file`, "");
+    setValue(`questions.${index}.fileData.mimeType`, "");
   };
   return (
     <>
@@ -269,13 +272,12 @@ export const QuestionCard: FC<QuestionCardProps> = ({
               <>
                 <img
                   alt="Question file"
+                  // src={watch(`questions.${index}.fileData.file`)}
                   src={filePath.path}
                   className="w-full tablet:w-[389px] rounded-xl"
                 />
                 <button
-                  onClick={() => {
-                    handleDeleteFile(filePath.id);
-                  }}
+                  onClick={handleDeleteFile}
                   className="absolute top-4 right-4 hover:border hover:border-white rounded-full p-1"
                 >
                   <X className="h-5 w-5 text-white fill-white" />
@@ -283,13 +285,12 @@ export const QuestionCard: FC<QuestionCardProps> = ({
               </>
             ) : (
               <div className=" flex items-center gap-2 mb-2">
-                <AudioPlayer index={filePath.id} audioPath={filePath.path} />
-                <button
-                  onClick={() => {
-                    handleDeleteFile(filePath.id);
-                  }}
-                  className=" p-1"
-                >
+                <AudioPlayer
+                  isInModal={true}
+                  index={index.toString()}
+                  audioPath={watch(`questions.${index}.fileData.file`)}
+                />
+                <button onClick={handleDeleteFile} className=" p-1">
                   <X className="h-5 w-5 text-white fill-white" />
                 </button>
               </div>

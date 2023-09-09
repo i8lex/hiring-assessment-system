@@ -10,12 +10,19 @@ interface ITest extends Document {
   questions: {
     question: string;
     file: string;
+    fileData: Object;
     answers: { answer: string; isCorrect: boolean }[];
   }[];
 }
+const fileDataSchema = new Schema({
+  file: { type: String },
+  mimeType: { type: String },
+});
+
 const questionSchema = new Schema({
   question: { type: String, required: true },
   file: { type: String },
+  fileData: fileDataSchema,
   answers: [
     {
       answer: { type: String, required: true },

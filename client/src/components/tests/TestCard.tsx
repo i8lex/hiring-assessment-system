@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../types";
 
 type TestCardProps = {
-  id: string;
+  id?: string;
   title: string;
   description: string;
   numberOfQuestions: number;
@@ -19,15 +19,16 @@ export const TestCard: FC<TestCardProps> = ({
   description,
 }) => {
   const answers = useSelector((state: RootState) => state.auth.answers);
-  const isCompleted = answers.map((answer) => answer.testId).includes(id);
+  const isCompleted = answers.map((answer) => answer.testId).includes(id!);
 
   const [deleteTest] = useDeleteTestMutation();
+
   return (
-    <Link
-      to={`/test/${id}`}
-      className="p-4 tablet:p-6 border border-stroke rounded-xl shadow-md shadow-gray-60 hover:scale-[1.02] transition-all"
-    >
-      <div className=" flex flex-col gap-4 tablet:gap-0 tablet:flex-row justify-between items-center">
+    <div className="p-4 flex items-center tablet:p-6 border border-stroke rounded-xl shadow-md shadow-gray-60 hover:scale-[1.02] transition-all">
+      <Link
+        to={`/test/${id}`}
+        className=" flex flex-col w-full gap-4 tablet:gap-0 tablet:flex-row justify-between items-center"
+      >
         <div className="flex flex-col items-center tablet:items-start gap-1 tablet:w-2/3 w-1/2">
           <h6 className="text-dispS3 text-dark-100">{title}</h6>
           <p className="text-parM text-dark-80 ">{description}</p>
@@ -43,16 +44,16 @@ export const TestCard: FC<TestCardProps> = ({
             <p className="text-parL text-dark-80">Number of questions</p>
             <p className="text-dispS1 text-dark-100">{numberOfQuestions}</p>
           </div>
-          <div
-            onClick={() => {
-              deleteTest(id);
-            }}
-            className="ml-3 hidden h-6 w-6 cursor-pointer p-0 text-dark-40 tablet:block"
-          >
-            <X className="h-6 w-6 text-dark-40" />
-          </div>
         </div>
+      </Link>
+      <div
+        onClick={() => {
+          deleteTest(id);
+        }}
+        className="ml-3  hidden h-6 w-6 cursor-pointer p-0 text-dark-40 tablet:block"
+      >
+        <X className="h-6 w-6 text-dark-40" />
       </div>
-    </Link>
+    </div>
   );
 };

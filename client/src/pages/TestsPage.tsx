@@ -8,8 +8,11 @@ import { CreateTestModal } from "../components/tests/modal/CreateTestModal";
 import { FormProvider, useForm } from "react-hook-form";
 
 const TestsPage = () => {
-  const { data: tests = [] as Test[] | never[], isLoading } =
-    useGetTestsQuery();
+  const {
+    data: tests = [] as Test[] | never[],
+    isLoading,
+    refetch,
+  } = useGetTestsQuery();
   const navigate = useNavigate();
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated,

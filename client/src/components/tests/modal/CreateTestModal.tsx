@@ -1,11 +1,10 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
-import { Dialog, Menu, Transition } from "@headlessui/react";
+import { Dialog, Transition } from "@headlessui/react";
 import { ReactComponent as X } from "../../../assets/IconsSet/x-close.svg";
 import { CreateTestMarkup } from "./CreateTestMarkup";
 import {
   useAddTestMutation,
-  useDeleteTestMutation,
   usePathTestMutation,
 } from "../../../redux/tests/testsApi";
 import type { Test } from "../../../types";
@@ -24,28 +23,18 @@ export const CreateTestModal: FC<CreateTestModalProps> = ({
   toggleModal,
   test,
 }) => {
-  const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [addTest] = useAddTestMutation();
   const [pathTest] = usePathTestMutation();
-  const toggleMenu = () => {
-    setIsOpenMenu(!isOpenMenu);
-  };
 
   const handleError = (errors: object) => {
     console.warn(errors);
   };
-  const {
-    handleSubmit,
-    formState: { errors },
-    reset,
-    getValues,
-    setValue,
-    // unregister,
-  } = useFormContext<Test>();
+  const { handleSubmit, reset, getValues, setValue } = useFormContext<Test>();
 
   const handleCreate = async (values: Test) => {
     try {
       if (!test) {
+        console.log(getValues("questions"));
         await addTest(values);
       }
       if (test) {
@@ -61,7 +50,6 @@ export const CreateTestModal: FC<CreateTestModalProps> = ({
   };
 
   useEffect(() => {
-    console.log(test);
     if (test) {
       setValue("title", test.title);
       setValue("description", test.description);

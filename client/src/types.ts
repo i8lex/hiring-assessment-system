@@ -9,7 +9,7 @@ export type RootState = {
 };
 
 export type Test = {
-  _id: string;
+  _id?: string;
   title: string;
   description: string;
   createdBy: string;
@@ -17,9 +17,10 @@ export type Test = {
   timer: number;
   answeredUsers: string[];
   questions: {
-    _id: string;
+    _id?: string;
     question: string;
     file: string;
+    fileData: { _id?: string; file: string; mimeType: string };
 
     answers: { answer: string; isCorrect: boolean }[];
   }[];

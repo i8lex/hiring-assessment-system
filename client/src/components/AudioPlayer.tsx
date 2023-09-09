@@ -121,9 +121,10 @@ export const AudioPlayer: FC<AudioPlayerProps> = ({
   return (
     <div className="flex w-full items-center justify-between gap-1 p-0 tablet:gap-[17.5px] ">
       <div
-        className={
-          "flex w-full items-center justify-between gap-3 rounded-md bg-orange-10 px-4 py-1 tablet:gap-[23px] tablet:px-6 tablet:w-[530px] desktop:w-[800px]"
-        }
+        className={clsx(
+          isInModal ? "" : "desktop:w-[800px]",
+          "flex w-full items-center justify-between gap-3 rounded-md bg-orange-10 px-4 py-1 tablet:gap-[23px] tablet:px-6 tablet:w-[550px] ",
+        )}
       >
         <div className="flex items-center p-0 tablet:gap-4">
           {isInModal ? (

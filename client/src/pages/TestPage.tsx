@@ -24,6 +24,10 @@ const TestPage = () => {
         {
           question: "",
           file: "",
+          fileData: {
+            file: "",
+            mimeType: "",
+          },
           answers: [
             { answer: "", isCorrect: true },
             { answer: "", isCorrect: false },
@@ -54,7 +58,7 @@ const TestPage = () => {
   const allAnswers = useSelector((state: RootState) => state.auth.answers);
   const [sendAnswer] = useSendAnswersMutation();
   const [answers, setAnswers] = useState({
-    testId: test?._id!,
+    testId: id!,
     remainingTime: "",
     testState: Array.from({ length: test?.questions.length! }, (_) => ({
       question: "",
@@ -64,7 +68,7 @@ const TestPage = () => {
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const isCompleted = test?.answeredUsers.includes(userId);
-
+  console.log(isCompleted);
   useEffect(() => {
     if (isSuccess) {
       setMinutes(test?.timer);
@@ -133,14 +137,16 @@ const TestPage = () => {
   return (
     <>
       <div className=" flex flex-col gap-4">
-        <button
-          className="self-end text-dark-100 font-semibold h-12 bg-orange-40 rounded border border-dark-90 shadow-sm shadow-dark-60 py-2 w-[130px]"
-          onClick={() => {
-            setIsEditModalOpen(true);
-          }}
-        >
-          {"Edit test"}
-        </button>
+        {role === "admin" ? (
+          <button
+            className="self-end text-dark-100 font-semibold h-12 bg-orange-40 rounded border border-dark-90 shadow-sm shadow-dark-60 py-2 w-[130px]"
+            onClick={() => {
+              setIsEditModalOpen(true);
+            }}
+          >
+            {"Edit test"}
+          </button>
+        ) : null}
 
         <div className="text-dark-100 text-dispS2">{test?.title}</div>
         <div className="text-dark-80 text-parM">{test?.description}</div>
@@ -223,6 +229,7 @@ const TestPage = () => {
             {test?.questions.map((question, index) => {
               return (
                 <QuestionCard
+                  isSuccess={isSuccess}
                   role={role}
                   setAnswers={setAnswers}
                   answers={answers}

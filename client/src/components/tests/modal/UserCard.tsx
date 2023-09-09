@@ -27,7 +27,6 @@ const UserCard: FC<UserCardProps> = ({ user, testId }) => {
     return accumulator;
   }, 0);
   const isHaveTest = user.tests.find((test) => test === testId);
-
   return (
     <>
       <div className="flex flex-col gap-2 border border-stroke rounded p-2 tablet:p-3 shadow-sm shadow-dark-60">

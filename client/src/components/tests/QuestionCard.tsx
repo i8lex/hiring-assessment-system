@@ -1,16 +1,21 @@
 import React, { FC, useEffect, useState } from "react";
 import { ReactComponent as CheckBoxIcon } from "../../assets/IconsSet/checkbox.svg";
 import { ReactComponent as CheckBoxFalse } from "../../assets/IconsSet/checkbox-false.svg";
-import { useGetFileQuery } from "../../redux/files/filesApi";
 import clsx from "clsx";
 import { AudioPlayer } from "../AudioPlayer";
 import { Answer } from "../../types";
 
 type QuestionCardProps = {
+  isSuccess: boolean;
   setAnswers: React.Dispatch<React.SetStateAction<Answer>>;
   role: string;
   answers: Answer;
   question: {
+    fileData: {
+      _id?: string;
+      file: string;
+      mimeType: string;
+    };
     question: string;
     file: string;
     answers: { answer: string; isCorrect: boolean }[];
@@ -19,6 +24,7 @@ type QuestionCardProps = {
   index: number;
 };
 export const QuestionCard: FC<QuestionCardProps> = ({
+  isSuccess,
   role,
   question,
   isPreview,
@@ -29,8 +35,17 @@ export const QuestionCard: FC<QuestionCardProps> = ({
   const [checked, setChecked] = useState<boolean[]>(
     Array(question.answers.length).fill(false),
   );
+  const [filePath, setFilePath] = useState({ path: "", mimeType: "" });
 
-  const { data: file, isSuccess } = useGetFileQuery(question.file);
+  // const { data: file, isSuccess } = useGetFileQuery(question.file);
+  useEffect(() => {
+    if (question.fileData.file) {
+      setFilePath({
+        path: question.fileData.file,
+        mimeType: question.fileData.mimeType,
+      });
+    }
+  }, [isSuccess]);
   useEffect(() => {
     setAnswers((prevAnswers) => {
       const newAnswers = { ...prevAnswers };
@@ -48,21 +63,23 @@ export const QuestionCard: FC<QuestionCardProps> = ({
       <p className="text-parS font-medium text-dark-100">{`${index + 1}. ${
         question.question
       }`}</p>
-      {isSuccess &&
-        (file.mimetype.startsWith("image/") ? (
+      {question.fileData.mimeType ? (
+        question.fileData.mimeType.startsWith("image/") ? (
           <img
             className="w-[200px] h-[200px] object-cover rounded-2xl border border-stroke overflow-hidden"
-            src={`data:${file?.mimetype};base64,${file?.buffer.toString()}`}
-            // src={filePath.path}
+            // src={`data:${file?.mimetype};base64,${file?.buffer.toString()}`}
+            // src={question.fileData.file}
+            src={filePath.path}
             alt="question pictures"
           />
         ) : (
           <AudioPlayer
-            audioPath={`data:${file?.mimetype};base64,${file?.buffer.toString()}`}
+            audioPath={question.fileData.file}
             // audioPath={filePath.path}
-            index={`${file._id}${file._id}`}
+            index={`${question.fileData._id}${index.toString()}`}
           />
-        ))}
+        )
+      ) : null}
       <div className="flex flex-col gap-2">
         {question.answers.map((answer, answerIndex) => {
           return (

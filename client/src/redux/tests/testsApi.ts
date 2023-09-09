@@ -72,7 +72,7 @@ export const testsApi = createApi({
     }),
     sendAnswers: build.mutation({
       query: ({ body }) => ({
-        url: `tests/answer`,
+        url: `answer`,
         method: "PUT",
         body,
       }),
