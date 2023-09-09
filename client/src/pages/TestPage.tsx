@@ -51,7 +51,7 @@ const TestPage = () => {
   const [minutes, setMinutes] = useState(test?.timer);
   const [seconds, setSeconds] = useState(0);
   const [remainingSeconds, setRemainingSeconds] = useState(0);
-  const [remainingMinutes, setRemainingMinutes] = useState(0);
+  const [remainingMinutes] = useState(0);
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated,
   );

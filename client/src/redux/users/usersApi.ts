@@ -4,7 +4,7 @@ import {
   fetchBaseQuery,
   TagDescription,
 } from "@reduxjs/toolkit/query/react";
-import { RootState, Test, User } from "../../types";
+import { RootState, User } from "../../types";
 
 const prepareHeaders = (
   headers: Headers,
