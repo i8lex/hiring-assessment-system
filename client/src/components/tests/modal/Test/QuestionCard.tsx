@@ -114,9 +114,10 @@ export const QuestionCard: FC<QuestionCardProps> = ({
         if (index !== 0) {
           return remove(index);
         }
+        return null;
       });
     }
-  }, [getValues, index]);
+  }, [getValues, index, remove]);
   return (
     <>
       <div
