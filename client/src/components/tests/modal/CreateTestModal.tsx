@@ -119,7 +119,7 @@ export const CreateTestModal: FC<CreateTestModalProps> = ({
                 >
                   <CreateTestMarkup />
 
-                  <div className="tabltet:mt-0 mt-8 flex w-full justify-between gap-4 border-t border-stroke bg-white p-4 tablet:flex tablet:justify-end tablet:px-6 tablet:py-5">
+                  <div className="tabltet:my-0 my-8 flex w-full justify-between gap-4 border-t border-stroke bg-white p-4 tablet:flex tablet:justify-end tablet:px-6 tablet:py-5">
                     <button
                       className="text-parS w-full tablet:w-fit px-4 py-2 bg-white border border-stroke rounded-xl hover:bg-gray-10 hover:text-dark-100"
                       onClick={() => {
