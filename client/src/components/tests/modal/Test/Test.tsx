@@ -151,6 +151,7 @@ export const TestCard = () => {
         >
           Add a question
         </button>
+        <div className="block h-20 tablet:hidden" />
       </div>
     </>
   );
