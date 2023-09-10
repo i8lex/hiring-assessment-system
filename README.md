@@ -17,7 +17,7 @@ In terminal, to install all dependency run:
 
 In the server root directory create file
 ## `.env` 
- and fill them like `.env.example` in example folder
+ and fill its like `.env.example` in example folder
 
 ## Available Scripts
 In the client project directory, you can run:
@@ -26,7 +26,7 @@ In the client project directory, you can run:
 
 In the server project directory, you can run:
 
-### `npm react-scripts start`
+### `npx nodemon src/index.ts`
 
 ## Technology stack `MERN` 
 ### Used libraries:
