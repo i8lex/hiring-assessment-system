@@ -32,6 +32,11 @@ const UserCard: FC<UserCardProps> = ({ user, testId, refetch }) => {
     if (refetch) {
       await refetch();
     }
+    if ("error" in result) {
+      console.error(result.error);
+    } else {
+      setIsSuccess(true);
+    }
   };
   const answers = user.answers.find((answer) => answer.testId === testId);
   const totalScore = answers ? handleTestsResult(answers) : 0;
