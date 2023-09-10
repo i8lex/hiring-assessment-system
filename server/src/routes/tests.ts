@@ -112,11 +112,8 @@ router.put("/answer", upload.none(), async (req: Request, res: Response) => {
     const { userId } = await jwt.verify(token!, process.env.SECRET_WORD);
     const user = await User.findById(userId);
     const test = await Test.findById(req.body.testId);
-    // console.log(user);
-    // console.log(test);
 
     if (user && test) {
-      console.log(req.body);
       await test.updateOne({ $push: { answeredUsers: userId } });
       await user.updateOne({ $push: { answers: req.body } });
       res.status(200).json({ message: "Successfully sent" });

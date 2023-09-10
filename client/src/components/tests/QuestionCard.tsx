@@ -147,7 +147,6 @@ export const QuestionCard: FC<QuestionCardProps> = ({
                       "h-[38px] w-full tablet:w-[389px] rounded-md text-parS placeholder:text-parS placeholder:font-normal focus:border-orange-40 focus:ring-orange-40 focus:ring-1 focus:outline-none  px-3 autofill:text-pars box-border"
                     }
                     onChange={(e) => {
-                      console.log(answers);
                       setAnswers((prevAnswers) => {
                         const newAnswers = { ...prevAnswers };
                         const newTestState = [...newAnswers.testState];

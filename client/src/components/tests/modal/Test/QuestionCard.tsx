@@ -84,8 +84,6 @@ export const QuestionCard: FC<QuestionCardProps> = ({
     }
   }, [getValues, index, isSuccess]);
   const onSelectFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(index);
-
     if (e.target.files && e.target.files.length > 0) {
       const reader = new FileReader();
       const file = e.target.files[0];

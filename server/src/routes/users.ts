@@ -65,7 +65,10 @@ router.put(
       await User.findByIdAndUpdate(
         userId,
         {
-          $pull: { answers: { testId: testId } },
+          $pull: {
+            answers: { testId: testId },
+            tests: testId,
+          },
         },
         { new: true },
       );
@@ -73,7 +76,9 @@ router.put(
       await Test.findByIdAndUpdate(
         testId,
         {
-          $pull: { answeredUsers: userId },
+          $pull: {
+            answeredUsers: userId,
+          },
         },
         { new: true },
       );
