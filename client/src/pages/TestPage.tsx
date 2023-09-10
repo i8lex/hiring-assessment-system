@@ -190,7 +190,7 @@ const TestPage = () => {
                   setIsModalOpen(true);
                 }}
               >
-                {" Scores or Sent"}
+                {" Send and result"}
               </button>
             </div>
           )}
