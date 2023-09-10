@@ -23,7 +23,7 @@ export const testsApi = createApi({
   reducerPath: "testsApi",
   tagTypes: ["Tests", "Test"],
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://hiring-assessment-server-7206a80f9bd6.herokuapp.com/api",
+    baseUrl: process.env.PROD_URL,
     prepareHeaders,
   }),
 

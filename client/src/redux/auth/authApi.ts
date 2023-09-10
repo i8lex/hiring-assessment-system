@@ -4,7 +4,7 @@ export const authApi = createApi({
   reducerPath: "authApi",
   tagTypes: ["Authentications", "Error"],
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://hiring-assessment-server-7206a80f9bd6.herokuapp.com/api",
+    baseUrl: process.env.PROD_URL,
   }),
   endpoints: (build) => ({
     register: build.mutation({
