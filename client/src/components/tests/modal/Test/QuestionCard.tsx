@@ -259,7 +259,7 @@ export const QuestionCard: FC<QuestionCardProps> = ({
             )
           ) : null}
         </div>
-        <div className="relative">
+        <div className="relative w-full tablet:w-fit">
           {filePath.path ? (
             filePath.mimeType.startsWith("image/") ? (
               <>
@@ -290,7 +290,7 @@ export const QuestionCard: FC<QuestionCardProps> = ({
           ) : (
             <>
               <label
-                className="relative mb-[5px] flex h-[38px] w-[389px] transform cursor-pointer flex-col items-center justify-center gap-[8px] rounded-md border  border-stroke py-[8px] px-[17px] text-parS font-medium  text-orange-100   outline-none  ring-green-90 ring-offset-2 focus-visible:ring-2 active:translate-y-[1px] disabled:pointer-events-none disabled:bg-dark-10 disabled:text-dark-60 disabled:active:translate-y-0 tablet:mb-2  [&>svg]:h-5 [&>svg]:w-5 [&>svg]:flex-shrink-0"
+                className=" mb-[5px] flex h-[38px] w-full self-end tablet:w-[389px] transform cursor-pointer flex-col items-center justify-center gap-[8px] rounded-md border  border-stroke py-[8px] px-[17px] text-parS font-medium  text-orange-100   outline-none  ring-green-90 ring-offset-2 focus-visible:ring-2 active:translate-y-[1px] disabled:pointer-events-none disabled:bg-dark-10 disabled:text-dark-60 disabled:active:translate-y-0 tablet:mb-2  [&>svg]:h-5 [&>svg]:w-5 [&>svg]:flex-shrink-0"
                 htmlFor="fileInput"
               >
                 <p>Upload file</p>
