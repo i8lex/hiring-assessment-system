@@ -5,6 +5,9 @@ import {
   TagDescription,
 } from "@reduxjs/toolkit/query/react";
 import { RootState, User } from "../../types";
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 const prepareHeaders = (
   headers: Headers,

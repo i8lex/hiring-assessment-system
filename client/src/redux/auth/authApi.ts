@@ -1,4 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 export const authApi = createApi({
   reducerPath: "authApi",
