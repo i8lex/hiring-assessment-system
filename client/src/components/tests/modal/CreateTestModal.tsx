@@ -2,7 +2,7 @@ import React, { Fragment, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { Dialog, Transition } from "@headlessui/react";
 import { ReactComponent as X } from "../../../assets/IconsSet/x-close.svg";
-import { CreateTestMarkup } from "./CreateTestMarkup";
+import { CreateTestMarkup } from "./Test/CreateTestMarkup";
 import {
   useAddTestMutation,
   usePathTestMutation,

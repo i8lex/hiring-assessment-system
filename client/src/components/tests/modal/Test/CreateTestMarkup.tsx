@@ -1,8 +1,8 @@
 import React from "react";
 import { useFormContext } from "react-hook-form";
-import { TestCard } from "./Test/Test";
-import type { Test } from "../../../types";
-import { Input } from "../../Input";
+import { TestCard } from "./Test";
+import type { Test } from "../../../../types";
+import { Input } from "../../../Input";
 
 export const CreateTestMarkup = () => {
   const {

@@ -2,6 +2,7 @@ import { User } from "../../../types";
 import React, { FC, useState } from "react";
 import { useSendTestMutation } from "../../../redux/tests/testsApi";
 import { Timer } from "../Timer";
+import { handleTestsResult } from "../../../utils/handleTestsResult";
 
 type UserCardProps = {
   testId: string;
@@ -20,12 +21,7 @@ const UserCard: FC<UserCardProps> = ({ user, testId }) => {
     }
   };
   const answers = user.answers.find((answer) => answer.testId === testId);
-  const totalScore = answers?.testState.reduce((accumulator, answer) => {
-    if (answer.isCorrect) {
-      return accumulator + 1;
-    }
-    return accumulator;
-  }, 0);
+  const totalScore = answers ? handleTestsResult(answers) : 0;
   const isHaveTest = user.tests.find((test) => test === testId);
   return (
     <>

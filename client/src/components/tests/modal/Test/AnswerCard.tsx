@@ -28,6 +28,7 @@ export const AnswerCard: FC<TestCardProps> = ({
     control,
     getValues,
     setValue,
+    watch,
     formState: { errors },
   } = useFormContext<Test>();
   const [isCanMove, setIsCanMove] = useState(false);
@@ -139,9 +140,7 @@ export const AnswerCard: FC<TestCardProps> = ({
               isRequired={true}
               id={`questions.${questionIndex}.answers.${index}.text`}
               placeholder={
-                getValues(
-                  `questions.${questionIndex}.answers.${index}.isCorrect`,
-                )
+                watch(`questions.${questionIndex}.answers.${index}.isCorrect`)
                   ? "Correct answer"
                   : "Answer"
               }

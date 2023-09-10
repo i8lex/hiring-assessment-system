@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "./pages/Login";
 import { GeneralLayout } from "./components/layouts/Layout";
 import TestsPage from "./pages/TestsPage";
@@ -11,6 +11,7 @@ function App() {
     <>
       <GeneralLayout>
         <Routes>
+          <Route path="/" element={<Navigate to="/tests" />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/tests" element={<TestsPage />} />

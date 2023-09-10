@@ -6,9 +6,11 @@ import { TestCard } from "../components/tests/TestCard";
 import { useState } from "react";
 import { CreateTestModal } from "../components/tests/modal/CreateTestModal";
 import { FormProvider, useForm } from "react-hook-form";
+import { LoadingSpinner } from "../components/LoadingSpinner";
 
 const TestsPage = () => {
-  const { data: tests = [] as Test[] | never[] } = useGetTestsQuery();
+  const { data: tests = [] as Test[] | never[], isLoading } =
+    useGetTestsQuery();
   const navigate = useNavigate();
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated,
@@ -45,7 +47,9 @@ const TestsPage = () => {
     navigate("/login");
     return null;
   }
-
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
   return (
     <>
       <div className="flex flex-col gap-4 tablet:gap-6   ">

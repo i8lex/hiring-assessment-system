@@ -13,6 +13,8 @@ import clsx from "clsx";
 import { addAnswer } from "../redux/auth/authSlice";
 import { CreateTestModal } from "../components/tests/modal/CreateTestModal";
 import { FormProvider, useForm } from "react-hook-form";
+import { handleTestsResult } from "../utils/handleTestsResult";
+import { LoadingSpinner } from "../components/LoadingSpinner";
 
 const TestPage = () => {
   const methods = useForm<Test>({
@@ -45,14 +47,14 @@ const TestPage = () => {
     navigate("/tests");
   }
   const getTest = useGetTestQuery(id!);
-  const { data: test, isSuccess, refetch } = getTest;
+  const { data: test, isSuccess, isLoading, refetch } = getTest;
   const [isTestStarted, setIsTestStarted] = useState(false);
   const [isTestEnded, setIsTestEnded] = useState(false);
   const role = useSelector((state: RootState) => state.auth.role);
   const [minutes, setMinutes] = useState(test?.timer);
   const [seconds, setSeconds] = useState(0);
   const [remainingSeconds, setRemainingSeconds] = useState(0);
-  const [remainingMinutes] = useState(0);
+  const [remainingMinutes, setRemainingMinutes] = useState(0);
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated,
   );
@@ -84,6 +86,22 @@ const TestPage = () => {
     }
   }, [isSuccess, test?._id, allAnswers, test?.timer]);
 
+  const handleStartTest = (flag: boolean) => {
+    setIsTestStarted(flag);
+    if (flag) {
+      const intervalId = setInterval(() => {
+        setRemainingSeconds((prevSeconds) => prevSeconds + 1);
+        if (remainingSeconds === 60) {
+          setRemainingSeconds(0);
+          setRemainingMinutes((prevMinutes) => prevMinutes + 1);
+        }
+      }, 1000);
+
+      return () => {
+        clearInterval(intervalId);
+      };
+    }
+  };
   useEffect(() => {
     if (minutes && isTestStarted) {
       const interval = setInterval(() => {
@@ -110,19 +128,6 @@ const TestPage = () => {
     return null;
   }
 
-  const handleStartTest = (flag: boolean) => {
-    setIsTestStarted(flag);
-    if (flag) {
-      const intervalId = setInterval(() => {
-        setRemainingSeconds((prevSeconds) => prevSeconds + 1);
-      }, 1000);
-
-      return () => {
-        clearInterval(intervalId);
-      };
-    }
-  };
-
   const handleSendTest = async () => {
     answers.remainingTime = `${
       remainingMinutes < 10 ? `0${remainingMinutes}` : remainingMinutes
@@ -131,21 +136,15 @@ const TestPage = () => {
     await addAnswer(answers.testId);
     await refetch();
   };
-  const totalScore = answers.testState.reduce((accumulator, answer) => {
-    const userAnswer = answer.userAnswer || "";
-    if (answer.isCorrect) {
-      return accumulator + 1;
-    } else if (
-      userAnswer &&
-      userAnswer.toLowerCase() === answer.answer.toLowerCase()
-    ) {
-      console.log("2");
-      return accumulator + 3;
-    } else {
-      return accumulator;
-    }
-  }, 0);
+  const totalScore = handleTestsResult(answers);
 
+  if (isLoading) {
+    return (
+      <div>
+        <LoadingSpinner />
+      </div>
+    );
+  }
   return (
     <>
       <div className=" flex flex-col gap-4">
