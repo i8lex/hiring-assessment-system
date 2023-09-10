@@ -134,6 +134,7 @@ export const TestCard = () => {
             append({
               question: "",
               file: "",
+              fileInput: new File([], ""),
               fileData: {
                 file: "",
                 mimeType: "",

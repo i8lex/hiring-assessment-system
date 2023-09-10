@@ -26,6 +26,7 @@ const TestPage = () => {
           question: "",
           answerType: "Single",
           file: "",
+          fileInput: new File([""], ""),
           fileData: {
             file: "",
             mimeType: "",

@@ -20,6 +20,7 @@ export type Test = {
     _id?: string;
     question: string;
     file: string;
+    fileInput: File;
     fileData: { _id?: string; file: string; mimeType: string };
     answerType: string;
     answers: { answer: string; isCorrect: boolean }[];

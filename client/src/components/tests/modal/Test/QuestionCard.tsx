@@ -83,8 +83,9 @@ export const QuestionCard: FC<QuestionCardProps> = ({
       });
     }
   }, [getValues, index, isSuccess]);
-
   const onSelectFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(index);
+
     if (e.target.files && e.target.files.length > 0) {
       const reader = new FileReader();
       const file = e.target.files[0];
@@ -110,7 +111,7 @@ export const QuestionCard: FC<QuestionCardProps> = ({
   };
   const answerType = watch(`questions.${index}.answerType`);
   useEffect(() => {
-    if (getValues(`questions.${index}.answerType`) === "Simple") {
+    if (answerType === "Simple") {
       getValues(`questions.${index}.answers`).map((_, index) => {
         if (index !== 0) {
           return remove(index);
