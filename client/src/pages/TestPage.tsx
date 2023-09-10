@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   useGetTestQuery,
   useSendAnswersMutation,
@@ -86,22 +86,25 @@ const TestPage = () => {
     }
   }, [isSuccess, test?._id, allAnswers, test?.timer]);
 
-  const handleStartTest = (flag: boolean) => {
-    setIsTestStarted(flag);
-    if (flag) {
-      const intervalId = setInterval(() => {
-        setRemainingSeconds((prevSeconds) => prevSeconds + 1);
-        if (remainingSeconds === 60) {
-          setRemainingSeconds(0);
-          setRemainingMinutes((prevMinutes) => prevMinutes + 1);
-        }
-      }, 1000);
+  const handleStartTest = useCallback(
+    async (flag: boolean) => {
+      setIsTestStarted(flag);
+      if (flag) {
+        const intervalId = setInterval(() => {
+          setRemainingSeconds((prevSeconds) => prevSeconds + 1);
+          if (remainingSeconds === 60) {
+            setRemainingSeconds(0);
+            setRemainingMinutes((prevMinutes) => prevMinutes + 1);
+          }
+        }, 1000);
 
-      return () => {
-        clearInterval(intervalId);
-      };
-    }
-  };
+        return () => {
+          clearInterval(intervalId);
+        };
+      }
+    },
+    [remainingSeconds],
+  );
   useEffect(() => {
     if (minutes && isTestStarted) {
       const interval = setInterval(() => {
@@ -121,7 +124,7 @@ const TestPage = () => {
         clearInterval(interval);
       };
     }
-  }, [isTestStarted, minutes, seconds]);
+  }, [isTestStarted, minutes, seconds, handleStartTest]);
 
   if (!isAuthenticated) {
     navigate("/login");
