@@ -5,9 +5,7 @@ import {
   TagDescription,
 } from "@reduxjs/toolkit/query/react";
 import { RootState, Test } from "../../types";
-import * as dotenv from "dotenv";
-
-dotenv.config();
+import { URL } from "../../constants";
 const prepareHeaders = (
   headers: Headers,
   {
@@ -25,7 +23,7 @@ export const testsApi = createApi({
   reducerPath: "testsApi",
   tagTypes: ["Tests", "Test"],
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.PROD_URL,
+    baseUrl: URL,
     prepareHeaders,
   }),
 

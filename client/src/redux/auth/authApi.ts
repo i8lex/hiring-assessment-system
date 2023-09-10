@@ -1,13 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import * as dotenv from "dotenv";
-
-dotenv.config();
+import { URL } from "../../constants";
 
 export const authApi = createApi({
   reducerPath: "authApi",
   tagTypes: ["Authentications", "Error"],
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.PROD_URL,
+    baseUrl: URL,
   }),
   endpoints: (build) => ({
     register: build.mutation({
