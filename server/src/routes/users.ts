@@ -5,6 +5,7 @@ import multer from "multer";
 import jwt from "jsonwebtoken";
 import User from "../models/userModel";
 import * as dotenv from "dotenv";
+import mongoose from "mongoose";
 
 const router = express.Router();
 dotenv.config();
@@ -47,5 +48,41 @@ router.get("/users/:id", async (req: Request, res: Response) => {
     res.status(500).json({ error });
   }
 });
+
+router.put(
+  "/users/:userId/reset/:testId",
+
+  async (req: Request, res: Response) => {
+    try {
+      const userId = req.params.userId;
+      const testId = req.params.testId;
+      if (
+        !mongoose.Types.ObjectId.isValid(userId) ||
+        !mongoose.Types.ObjectId.isValid(testId)
+      ) {
+        return res.status(400).json({ error: "Invalid user or test ID" });
+      }
+      await User.findByIdAndUpdate(
+        userId,
+        {
+          $pull: { answers: { testId: testId } },
+        },
+        { new: true },
+      );
+
+      await Test.findByIdAndUpdate(
+        testId,
+        {
+          $pull: { answeredUsers: userId },
+        },
+        { new: true },
+      );
+
+      res.status(200);
+    } catch (error) {
+      res.status(500).json({ error });
+    }
+  },
+);
 
 export default router;

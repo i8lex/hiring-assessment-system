@@ -1,23 +1,36 @@
 import { User } from "../../../types";
 import React, { FC, useState } from "react";
 import { useSendTestMutation } from "../../../redux/tests/testsApi";
+import { useResetAnswersMutation } from "../../../redux/users/usersApi";
+
 import { Timer } from "../Timer";
 import { handleTestsResult } from "../../../utils/handleTestsResult";
 
 type UserCardProps = {
+  refetch?: () => void;
   testId: string;
   user: User;
 };
-const UserCard: FC<UserCardProps> = ({ user, testId }) => {
+const UserCard: FC<UserCardProps> = ({ user, testId, refetch }) => {
   const [sendTest] = useSendTestMutation();
+  const [resetAnswers] = useResetAnswersMutation();
   const [isSuccess, setIsSuccess] = useState(false);
   const handleSendTest = async () => {
     const result = await sendTest({ id: user._id, body: { testId } });
+    if (refetch) {
+      await refetch();
+    }
 
     if ("error" in result) {
       console.error(result.error);
     } else {
       setIsSuccess(true);
+    }
+  };
+  const handleResetAnswers = async () => {
+    const result = await resetAnswers({ userId: user._id, testId });
+    if (refetch) {
+      await refetch();
     }
   };
   const answers = user.answers.find((answer) => answer.testId === testId);
@@ -35,25 +48,36 @@ const UserCard: FC<UserCardProps> = ({ user, testId }) => {
             <p className="text-parL text-dark-80">{user.age} years old</p>
           </div>
           {answers ? (
-            <div className="hidden tablet:flex items-center gap-4">
-              <div className=" flex flex-col gap-1 items-center justify-center">
-                <Timer
-                  text={"Time:"}
-                  minutes={+answers.remainingTime.split(":")[0]}
-                  seconds={+answers.remainingTime.split(":")[1]}
-                />
+            <div className="hidden tablet:flex flex-col gap-2 items-center">
+              <div className="flex items-center gap-4">
+                <div className=" flex flex-col gap-1 items-center justify-center">
+                  <Timer
+                    text={"Time:"}
+                    minutes={+answers.remainingTime.split(":")[0]}
+                    seconds={+answers.remainingTime.split(":")[1]}
+                  />
+                </div>
+                <div className=" tablet:flex flex-col gap-1 items-center justify-center">
+                  <p className=" text-parL text-dark-80">Score:</p>
+                  <p className="text-center text-dispS2 text-dark-100 font-semibold h-[40px] w-[100px] bg-orange-40 rounded border border-dark-90 shadow-sm shadow-dark-60">
+                    {totalScore}
+                  </p>
+                </div>
               </div>
-              <div className=" tablet:flex flex-col gap-1 items-center justify-center">
-                <p className=" text-parL text-dark-80">Score:</p>
-                <p className="text-center text-dispS2 text-dark-100 font-semibold h-[40px] w-[100px] bg-orange-40 rounded border border-dark-90 shadow-sm shadow-dark-60">
-                  {totalScore}
-                </p>
-              </div>
+              <button
+                type={"button"}
+                className="text-center w-full hover:bg-orange-10 tablet:text-parS text-quot text-orange-80 font-medium py-1 px-2  border-2 border-orange-100 rounded"
+                onClick={handleResetAnswers}
+              >
+                Reset answers
+              </button>
             </div>
           ) : null}
           {answers ? (
-            <div className="text-center text-parL tablet:text-dispS2 text-orange-80 font-medium py-2 px-4  border-2 border-orange-100 rounded">
-              Completed
+            <div className="flex flex-col items-end gap-1">
+              <div className="text-center text-parL tablet:text-dispS2 text-orange-80 font-medium py-2 px-4  border-2 border-orange-100 rounded">
+                Completed
+              </div>
             </div>
           ) : !isSuccess ? (
             !isHaveTest ? (
@@ -76,20 +100,29 @@ const UserCard: FC<UserCardProps> = ({ user, testId }) => {
           )}
         </div>
         {answers ? (
-          <div className="flex tablet:hidden items-center justify-between w-full">
-            <div className=" flex flex-col gap-1 items-center justify-center">
-              <Timer
-                text={"Time:"}
-                minutes={+answers.remainingTime.split(":")[0]}
-                seconds={+answers.remainingTime.split(":")[1]}
-              />
+          <div className="flex flex-col items-center w-full gap-2 tablet:hidden">
+            <div className="flex  items-end justify-between w-full">
+              <div className=" flex flex-col gap-1 items-center justify-center">
+                <Timer
+                  text={"Time:"}
+                  minutes={+answers.remainingTime.split(":")[0]}
+                  seconds={+answers.remainingTime.split(":")[1]}
+                />
+              </div>
+              <div className=" tablet:flex flex-col gap-2 items-center justify-center">
+                <p className=" text-quot text-dark-80 text-center">Score:</p>
+                <p className="text-center text-dispS2 text-dark-100 font-semibold h-[40px] w-[100px] bg-orange-40 rounded border border-dark-90 shadow-sm shadow-dark-60">
+                  {totalScore}
+                </p>
+              </div>
             </div>
-            <div className=" tablet:flex flex-col gap-2 items-center justify-center">
-              <p className=" text-quot text-dark-80 text-center">Score:</p>
-              <p className="text-center text-dispS2 text-dark-100 font-semibold h-[40px] w-[100px] bg-orange-40 rounded border border-dark-90 shadow-sm shadow-dark-60">
-                {totalScore}
-              </p>
-            </div>
+            <button
+              type={"button"}
+              className="text-center w-full hover:bg-orange-10 tablet:text-parS text-quot text-orange-80 font-medium py-1 px-2  border-2 border-orange-100 rounded"
+              onClick={handleResetAnswers}
+            >
+              Reset answers
+            </button>
           </div>
         ) : null}
       </div>

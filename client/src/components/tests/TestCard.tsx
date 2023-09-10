@@ -9,7 +9,7 @@ type TestCardProps = {
   id?: string;
   title: string;
   description: string;
-  numberOfQuestions: number;
+  numberOfQuestions?: number;
 };
 
 export const TestCard: FC<TestCardProps> = ({

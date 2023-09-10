@@ -69,7 +69,7 @@ const TestsPage = () => {
             id={test._id}
             title={test.title}
             description={test.description}
-            numberOfQuestions={test.questions.length}
+            numberOfQuestions={test.questionsQuantity}
           />
         ))}
       </div>

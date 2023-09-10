@@ -19,7 +19,7 @@ export const SendTestModal: FC<SendTestModalProps> = ({
   toggleModal,
   testId,
 }) => {
-  const { data: users } = useGetUsersQuery();
+  const { data: users, refetch } = useGetUsersQuery();
   return (
     <>
       <Transition show={isModalOpen} as={Fragment}>
@@ -73,7 +73,12 @@ export const SendTestModal: FC<SendTestModalProps> = ({
                 </div>
                 <div className="p-2 tablet:p-3 flex flex-col gap-2 mb-6">
                   {users?.map((user: User) => (
-                    <UserCard key={user._id} user={user} testId={testId!} />
+                    <UserCard
+                      refetch={refetch}
+                      key={user._id}
+                      user={user}
+                      testId={testId!}
+                    />
                   ))}
                 </div>
               </Dialog.Panel>

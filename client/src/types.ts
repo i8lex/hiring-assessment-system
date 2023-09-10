@@ -9,6 +9,7 @@ export type RootState = {
 };
 
 export type Test = {
+  questionsQuantity?: number;
   _id?: string;
   title: string;
   description: string;

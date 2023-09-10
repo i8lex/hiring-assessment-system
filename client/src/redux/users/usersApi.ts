@@ -46,7 +46,15 @@ export const usersApi = createApi({
         { type: "User", id },
       ],
     }),
+    resetAnswers: build.mutation({
+      query: ({ userId, testId }) => ({
+        url: `users/${userId}/reset/${testId}`,
+        method: "PUT",
+      }),
+      invalidatesTags: [{ type: "User", id: "LIST" }],
+    }),
   }),
 });
 
-export const { useGetUsersQuery, useGetUserQuery } = usersApi;
+export const { useGetUsersQuery, useGetUserQuery, useResetAnswersMutation } =
+  usersApi;

@@ -5,6 +5,7 @@ import multer from "multer";
 import jwt from "jsonwebtoken";
 import User from "../models/userModel";
 import * as dotenv from "dotenv";
+import mongoose from "mongoose";
 
 const router = express.Router();
 dotenv.config();
@@ -51,7 +52,19 @@ router.get("/tests", async (req: Request, res: Response) => {
     const user = await User.findById(userId);
     if (user) {
       const tests = await Test.find({ _id: { $in: user.tests } });
-      res.status(200).json(tests);
+      const testToResponse = tests.map((test) => {
+        return {
+          _id: test._id,
+          title: test.title,
+          description: test.description,
+          createdBy: test.createdBy,
+          timerEnabled: test.timerEnabled,
+          timer: test.timer,
+          answeredUsers: test.answeredUsers,
+          questionsQuantity: test.questions.length,
+        };
+      });
+      res.status(200).json(testToResponse);
     }
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch tests" });
