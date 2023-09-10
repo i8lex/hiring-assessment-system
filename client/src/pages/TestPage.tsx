@@ -86,25 +86,26 @@ const TestPage = () => {
     }
   }, [isSuccess, test?._id, allAnswers, test?.timer]);
 
-  const handleStartTest = useCallback(
-    async (flag: boolean) => {
-      setIsTestStarted(flag);
-      if (flag) {
-        const intervalId = setInterval(() => {
-          setRemainingSeconds((prevSeconds) => prevSeconds + 1);
-          if (remainingSeconds === 60) {
-            setRemainingSeconds(0);
-            setRemainingMinutes((prevMinutes) => prevMinutes + 1);
-          }
-        }, 1000);
+  const handleStartTest = useCallback((flag: boolean) => {
+    setIsTestStarted(flag);
+  }, []);
 
-        return () => {
-          clearInterval(intervalId);
-        };
-      }
-    },
-    [remainingSeconds],
-  );
+  useEffect(() => {
+    if (isTestStarted) {
+      const interval = setInterval(() => {
+        setRemainingSeconds((prevSeconds) => prevSeconds + 1);
+        if (remainingSeconds === 60) {
+          setRemainingSeconds(0);
+          setRemainingMinutes((prevMinutes) => prevMinutes + 1);
+        }
+      }, 1000);
+
+      return () => {
+        clearInterval(interval);
+      };
+    }
+  }, [remainingSeconds, isTestStarted]);
+
   useEffect(() => {
     if (minutes && isTestStarted) {
       const interval = setInterval(() => {
