@@ -136,9 +136,9 @@ export const QuestionCard: FC<QuestionCardProps> = ({
           ref={drag}
         >
           <div className="flex w-full items-center justify-between gap-2 rounded-md">
-            <div className="flex items-center gap-2">
+            <div className=" hidden tablet:flex items-center gap-2">
               {getValues(`questions`).length > 1 ? (
-                <div className="hidden h-5 w-5 tablet:block">
+                <div className=" h-5 w-5 ">
                   <MoveIcon
                     className={clsx(
                       "h-5 w-5 cursor-move text-dark-40",
@@ -159,7 +159,7 @@ export const QuestionCard: FC<QuestionCardProps> = ({
             <Input
               isRequired={true}
               id={`question.${index}.question`}
-              placeholder={"Question"}
+              placeholder={"Enter the question"}
               className="tablet:w-fit"
               inputClassName={clsx(
                 "w-full min-w-[125px]",

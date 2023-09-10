@@ -110,8 +110,10 @@ export const TestCard = () => {
           />
         ) : null}
       </div>
-      <div className="px-4 tablet:px-6">
-        <p className="mb-4 text-parS text-dark-100 tablet:hidden">Question</p>
+      <div className="px-4 tablet:px-6 tablet:hidden h-[30px] mb-8" />
+
+      <div className="px-4 tablet:px-6 tablet:hidden">
+        <p className=" text-parS text-dark-100 ">Question</p>
       </div>
 
       <DndProvider backend={HTML5Backend}>
