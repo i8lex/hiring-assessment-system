@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { ReactComponent as X } from "../../../assets/IconsSet/x-close.svg";
 
@@ -19,7 +19,7 @@ export const SendTestModal: FC<SendTestModalProps> = ({
   toggleModal,
   testId,
 }) => {
-  const { data: users, refetch } = useGetUsersQuery(undefined, {
+  const { data: users } = useGetUsersQuery(undefined, {
     refetchOnMountOrArgChange: true,
   });
 
