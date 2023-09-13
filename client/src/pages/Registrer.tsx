@@ -40,10 +40,8 @@ const RegisterPage = () => {
       const response: RegisterResponse = await register(values);
 
       if ("data" in response) {
-        setTimeout(() => {
-          reset();
-          navigate("/login");
-        }, 2000);
+        reset();
+        navigate("/login");
       } else {
         console.log(response.error);
       }

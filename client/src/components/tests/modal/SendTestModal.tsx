@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { ReactComponent as X } from "../../../assets/IconsSet/x-close.svg";
 
@@ -19,7 +19,10 @@ export const SendTestModal: FC<SendTestModalProps> = ({
   toggleModal,
   testId,
 }) => {
-  const { data: users, refetch } = useGetUsersQuery();
+  const { data: users, refetch } = useGetUsersQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  });
+
   return (
     <>
       <Transition show={isModalOpen} as={Fragment}>
@@ -73,12 +76,7 @@ export const SendTestModal: FC<SendTestModalProps> = ({
                 </div>
                 <div className="p-2 tablet:p-3 flex flex-col gap-2 mb-6">
                   {users?.map((user: User) => (
-                    <UserCard
-                      refetch={refetch}
-                      key={user._id}
-                      user={user}
-                      testId={testId!}
-                    />
+                    <UserCard key={user._id} user={user} testId={testId!} />
                   ))}
                 </div>
               </Dialog.Panel>

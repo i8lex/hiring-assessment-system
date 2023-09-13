@@ -34,10 +34,8 @@ const LoginPage = () => {
 
       if ("data" in response) {
         dispatch(loginSuccess(response.data));
-        setTimeout(() => {
-          navigate("/tests");
-          // handleClose();
-        }, 2000);
+
+        navigate("/tests");
       } else {
         console.log(response.error);
       }

@@ -1,46 +1,49 @@
 import { User } from "../../../types";
 import React, { FC, useState } from "react";
 import { useSendTestMutation } from "../../../redux/tests/testsApi";
-import { useResetAnswersMutation } from "../../../redux/users/usersApi";
+import {
+  useResetAnswersMutation,
+  useGetUsersQuery,
+  useLazyGetUsersQuery,
+} from "../../../redux/users/usersApi";
 
 import { Timer } from "../Timer";
 import { handleTestsResult } from "../../../utils/handleTestsResult";
 
 type UserCardProps = {
-  refetch?: () => void;
   testId: string;
   user: User;
 };
-const UserCard: FC<UserCardProps> = ({ user, testId, refetch }) => {
+const UserCard: FC<UserCardProps> = ({ user, testId }) => {
   const [sendTest] = useSendTestMutation();
   const [resetAnswers] = useResetAnswersMutation();
-  const [isSuccess, setIsSuccess] = useState(false);
+  const { refetch } = useGetUsersQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  });
+
+  const [trigger] = useLazyGetUsersQuery();
+  const answers = user.answers.find((answer) => answer.testId === testId);
+  const isHaveTest = user.tests.find((test) => test === testId);
+  const totalScore = answers ? handleTestsResult(answers) : 0;
+  const [isSentSuccess, setIsSentSuccess] = useState(false);
   const handleSendTest = async () => {
     const result = await sendTest({ id: user._id, body: { testId } });
-    if (refetch) {
-      await refetch();
-    }
 
     if ("error" in result) {
       console.error(result.error);
     } else {
-      setIsSuccess(true);
+      refetch();
+      setIsSentSuccess(true);
     }
   };
+
   const handleResetAnswers = async () => {
     const result = await resetAnswers({ userId: user._id, testId });
-    if (refetch) {
-      await refetch();
-    }
     if ("error" in result) {
       console.error(result.error);
-    } else {
-      setIsSuccess(true);
     }
   };
-  const answers = user.answers.find((answer) => answer.testId === testId);
-  const totalScore = answers ? handleTestsResult(answers) : 0;
-  const isHaveTest = user.tests.find((test) => test === testId);
+
   return (
     <>
       <div className="flex flex-col gap-2 border border-stroke rounded p-2 tablet:p-3 shadow-sm shadow-dark-60">
@@ -72,7 +75,10 @@ const UserCard: FC<UserCardProps> = ({ user, testId, refetch }) => {
               <button
                 type={"button"}
                 className="text-center w-full hover:bg-orange-10 tablet:text-parS text-quot text-orange-80 font-medium py-1 px-2  border-2 border-orange-100 rounded"
-                onClick={handleResetAnswers}
+                onClick={async () => {
+                  trigger(undefined, false);
+                  await handleResetAnswers();
+                }}
               >
                 Reset answers
               </button>
@@ -84,7 +90,7 @@ const UserCard: FC<UserCardProps> = ({ user, testId, refetch }) => {
                 Completed
               </div>
             </div>
-          ) : !isSuccess ? (
+          ) : !isSentSuccess ? (
             !isHaveTest ? (
               <button
                 className="text-parS  px-6 py-2 text-dark-100 font-semibold h-[40px] w-[100px] bg-orange-40 rounded border border-dark-90 shadow-sm shadow-dark-60"
@@ -124,7 +130,10 @@ const UserCard: FC<UserCardProps> = ({ user, testId, refetch }) => {
             <button
               type={"button"}
               className="text-center w-full hover:bg-orange-10 tablet:text-parS text-quot text-orange-80 font-medium py-1 px-2  border-2 border-orange-100 rounded"
-              onClick={handleResetAnswers}
+              onClick={async () => {
+                trigger(undefined, false);
+                await handleResetAnswers();
+              }}
             >
               Reset answers
             </button>

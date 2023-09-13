@@ -11,11 +11,11 @@ function App() {
     <>
       <GeneralLayout>
         <Routes>
-          <Route path="/" element={<Navigate to="/tests" />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/tests" element={<TestsPage />} />
           <Route path="/test/:id" element={<TestPage />} />
+          <Route path="*" element={<Navigate to="/tests" />} />
         </Routes>
       </GeneralLayout>
     </>

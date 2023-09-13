@@ -46,8 +46,16 @@ const TestPage = () => {
   if (!id) {
     navigate("/tests");
   }
-  const getTest = useGetTestQuery(id!);
-  const { data: test, isSuccess, isLoading, refetch } = getTest;
+  // const getTest = useGetTestQuery(id!);
+  const {
+    data: test,
+    isSuccess,
+    isLoading,
+    refetch,
+  } = useGetTestQuery(id!, {
+    refetchOnMountOrArgChange: true,
+    skip: !id,
+  });
   const [isTestStarted, setIsTestStarted] = useState(false);
   const [isTestEnded, setIsTestEnded] = useState(false);
   const role = useSelector((state: RootState) => state.auth.role);

@@ -56,5 +56,9 @@ export const usersApi = createApi({
   }),
 });
 
-export const { useGetUsersQuery, useGetUserQuery, useResetAnswersMutation } =
-  usersApi;
+export const {
+  useGetUsersQuery,
+  useLazyGetUsersQuery,
+  useGetUserQuery,
+  useResetAnswersMutation,
+} = usersApi;
