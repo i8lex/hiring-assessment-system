@@ -34,7 +34,7 @@ export const authSlice = createSlice({
       state.userId = "";
     },
     addAnswer: (state, action) => {
-      state.answers.push(action.payload); // Добавляем ответ в конец массива
+      state.answers.push(action.payload);
     },
   },
 });

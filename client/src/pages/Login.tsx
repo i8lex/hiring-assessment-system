@@ -7,6 +7,8 @@ import { useLoginMutation } from "../redux/auth/authApi";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { SerializedError } from "@reduxjs/toolkit";
 import { Answer } from "../types";
+import { useState } from "react";
+import { PopUpModal } from "../components/modal/PopUpModal";
 
 type FormRequiredFields = {
   username: string;
@@ -27,62 +29,46 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [login] = useLoginMutation();
-
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isError, setIsError] = useState(true);
   const onSubmit = async (values: FormRequiredFields) => {
     try {
       const response: LoginResponse = await login(values);
-
+      setIsPopupOpen(true);
       if ("data" in response) {
         dispatch(loginSuccess(response.data));
-
-        navigate("/tests");
-      } else {
-        console.log(response.error);
+        setIsError(false);
       }
-
-      // if (data.token) {
-      //   dispatch(loginSuccess(data.token));
-      //   setTimeout(() => {
-      //     navigate("/tests");
-      //     // handleClose();
-      //   }, 3000);
-      // }
-      // if (error) {
-      //   setMessage(error.data.error);
-      //   const { confirmed } = error.data;
-      //   setConfirmed(confirmed);
-      //   if (!confirmed && confirmed !== undefined) {
-      //     setEmail(values.email);
-      //     return setOpenModal(true);
-      //   } else {
-      //     setOpenModal(true);
-      //     setTimeout(() => handleClose(), 3000);
-      //   }
-      // } else {
-      //   const { message, confirmed } = data;
-      //   setMessage(message);
-      //   setConfirmed(confirmed);
-      //   setOpenModal(true);
-      //
-      //   if (data.token && confirmed === true) {
-      //     dispatch(loginSuccess(data.token));
-      //     setTimeout(() => {
-      //       navigate("/tests");
-      //       // handleClose();
-      //     }, 3000);
-      //   }
-      // }
     } catch (err) {
       console.log(err);
-      // setMessage(err.message);
-      // setOpenModal(true);
     }
   };
   const handleError = (errors: object) => {
     console.warn(errors);
   };
+  const handleRedirect = (type: "error" | "success") => {
+    switch (type) {
+      case "error":
+        navigate("/login");
+        break;
+      case "success":
+        navigate("/tests");
+        break;
+    }
+  };
   return (
     <>
+      <PopUpModal
+        type={isError ? "error" : "success"}
+        buttonAction={handleRedirect}
+        showPopUpModal={isPopupOpen}
+        setShowPopUpModal={setIsPopupOpen}
+        titleText={isError ? "Login failed" : "Welcome back!"}
+        messageText={
+          !isError ? "Login successful" : "Wrong username or password"
+        }
+        buttonText={"OK"}
+      />
       <div className="mx-auto mt-6">
         <h1 className="text-dark-100 text-dispS3 font-medium">Sign in</h1>
       </div>

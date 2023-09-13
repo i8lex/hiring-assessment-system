@@ -1,9 +1,10 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { Link } from "react-router-dom";
 import { ReactComponent as X } from "../../assets/IconsSet/x-close.svg";
 import { useDeleteTestMutation } from "../../redux/tests/testsApi";
 import { useSelector } from "react-redux";
 import { RootState } from "../../types";
+import { DeleteConfirmModal } from "../modal/DeleteConfirmModal";
 
 type TestCardProps = {
   id?: string;
@@ -22,13 +23,17 @@ export const TestCard: FC<TestCardProps> = ({
   const isCompleted = answers.map((answer) => answer.testId).includes(id!);
   const role = useSelector((state: RootState) => state.auth.role);
   const [deleteTest] = useDeleteTestMutation();
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const handleDeleteTest = () => {
+    deleteTest(id);
+  };
   return (
     <div className="p-4 flex items-center tablet:p-6 border border-stroke rounded-xl shadow-md shadow-gray-60 hover:scale-[1.02] transition-all">
       <Link
         to={`/test/${id}`}
         className=" flex flex-col w-full gap-4 tablet:gap-0 tablet:flex-row justify-between items-center"
       >
-        <div className="flex flex-col items-center tablet:items-start gap-1 tablet:w-2/3 w-1/2">
+        <div className="flex flex-col items-center tablet:items-start gap-1 tablet:w-2/3 w-full">
           <h6 className="text-dispS3 text-dark-100">{title}</h6>
           <p className="text-parM text-dark-80 ">{description}</p>
         </div>
@@ -48,11 +53,19 @@ export const TestCard: FC<TestCardProps> = ({
       {role === "admin" ? (
         <div
           onClick={() => {
-            deleteTest(id);
+            setIsConfirmModalOpen(true);
           }}
-          className="ml-3  hidden h-6 w-6 cursor-pointer p-0 text-dark-40 tablet:block"
+          className="ml-3 self-start tablet:self-center h-6 w-6 cursor-pointer p-0 text-dark-40 tablet:block"
         >
           <X className="h-6 w-6 text-dark-40" />
+          <DeleteConfirmModal
+            Action={handleDeleteTest}
+            showDeleteConfirmModal={isConfirmModalOpen}
+            setShowDeleteConfirmModal={setIsConfirmModalOpen}
+            titleText={"Delete test"}
+            messageText={"Are certain about delete this test?"}
+            buttonText={"Delete"}
+          />
         </div>
       ) : null}
     </div>

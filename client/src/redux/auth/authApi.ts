@@ -24,5 +24,4 @@ export const authApi = createApi({
     }),
   }),
 });
-// @ts-ignore
 export const { useRegisterMutation, useLoginMutation } = authApi;
