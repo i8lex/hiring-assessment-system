@@ -28,7 +28,6 @@ export const DeleteConfirmModal: FC<DeleteConfirmModalProps> = ({
           onClose={() => setShowDeleteConfirmModal(false)}
           className="relative z-[60] bg-green-100"
         >
-          {/* The backdrop, rendered as a fixed sibling to the panel container */}
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -44,7 +43,6 @@ export const DeleteConfirmModal: FC<DeleteConfirmModalProps> = ({
             />
           </Transition.Child>
 
-          {/* Full-screen container to center the panel */}
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -55,7 +53,6 @@ export const DeleteConfirmModal: FC<DeleteConfirmModalProps> = ({
             leaveTo="opacity-0 scale-95"
           >
             <div className="fixed inset-0 flex items-center justify-center">
-              {/* The actual dialog panel  */}
               <Dialog.Panel className="mx-auto h-screen tablet:h-fit flex items-center w-full gap-4 rounded-lg bg-white p-6 tablet:max-w-[512px] ">
                 <div className=" h-12 w-12 text-error-100">
                   <DeleteIcon />

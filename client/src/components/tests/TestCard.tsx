@@ -28,7 +28,7 @@ export const TestCard: FC<TestCardProps> = ({
     deleteTest(id);
   };
   return (
-    <div className="p-4 flex items-center tablet:p-6 border border-stroke rounded-xl shadow-md shadow-gray-60 hover:scale-[1.02] transition-all">
+    <div className="relative p-4 flex items-center tablet:p-6 border border-stroke rounded-xl shadow-md shadow-gray-60 hover:scale-[1.02] transition-all">
       <Link
         to={`/test/${id}`}
         className=" flex flex-col w-full gap-4 tablet:gap-0 tablet:flex-row justify-between items-center"
@@ -55,19 +55,19 @@ export const TestCard: FC<TestCardProps> = ({
           onClick={() => {
             setIsConfirmModalOpen(true);
           }}
-          className="ml-3 self-start tablet:self-center h-6 w-6 cursor-pointer p-0 text-dark-40 tablet:block"
+          className="absolute top-2 right-2 ml-3 self-start tablet:self-center h-6 w-6 cursor-pointer p-0 text-dark-40 tablet:block"
         >
           <X className="h-6 w-6 text-dark-40" />
-          <DeleteConfirmModal
-            Action={handleDeleteTest}
-            showDeleteConfirmModal={isConfirmModalOpen}
-            setShowDeleteConfirmModal={setIsConfirmModalOpen}
-            titleText={"Delete test"}
-            messageText={"Are certain about delete this test?"}
-            buttonText={"Delete"}
-          />
         </div>
       ) : null}
+      <DeleteConfirmModal
+        Action={handleDeleteTest}
+        showDeleteConfirmModal={isConfirmModalOpen}
+        setShowDeleteConfirmModal={setIsConfirmModalOpen}
+        titleText={"Delete test"}
+        messageText={"Are certain about delete this test?"}
+        buttonText={"Delete"}
+      />
     </div>
   );
 };

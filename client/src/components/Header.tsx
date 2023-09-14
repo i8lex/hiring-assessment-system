@@ -17,9 +17,9 @@ export const Header = () => {
   };
 
   return (
-    <header className="bg-green-10 flex items-center justify-end  gap-4 p-4 tablet:p-6 ">
+    <header className="bg-green-10    p-4 tablet:p-6 ">
       {isAuthenticated ? (
-        <>
+        <div className="mx-auto max-w-[1920px] gap-4 flex items-center justify-end">
           <Link
             className="text-dark-100 text-dispS3 pb-0.5 hover:border-b border-dark-100"
             to="/tests"
@@ -32,9 +32,9 @@ export const Header = () => {
           >
             Logout
           </button>
-        </>
+        </div>
       ) : (
-        <>
+        <div className="mx-auto max-w-[1920px] gap-4 flex items-center justify-end">
           <Link
             className="text-dark-100 text-parL px-4 py-2 border border-stroke rounded-md hover:bg-gray-10 hover:text-dark-100"
             to="/register"
@@ -47,7 +47,7 @@ export const Header = () => {
           >
             Login
           </Link>
-        </>
+        </div>
       )}
     </header>
   );
